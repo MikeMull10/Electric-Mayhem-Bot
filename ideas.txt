@@ -1,0 +1,34 @@
+Guilds (Folder):
+    guild.id (Dict) {
+        "category": rlm_category.id,
+        "queue": rlm_queue.id,
+        "mafia_players": [
+            player0,
+            player1,
+            player2,
+        ]
+
+    }
+Players (Folder) {
+    player.id: {
+        Guild.id: {
+            wins: 0,
+            losses: 1,
+            mafia: 0,
+            villager: 0,
+            correct_guesses: 0,
+
+        }
+    },
+}
+game (Dict) {
+    guild: guild.id,
+    voice_channel: channel.id,
+    text_channel: channel.id,
+    players: {
+        player1,
+        player2
+    }
+}
+
+Make temporary reactions of players pfps
