@@ -6,11 +6,25 @@ from discord.ext import commands
 class Default(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.server_role = None
+        self.former_role = None
+        self.team_roles = []
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"Logged in and listening as {self.bot.user}!")
         await self.bot.change_presence(activity=discord.Game(name="being Programmed"))  # Set Discord status
+
+        for guild in self.bot.guilds:
+            if guild.name == "Michael\'s Server":
+                for role in guild.roles:
+                    if role.name == "EM|Electric Mayhem":
+                        self.server_role = role
+                    elif role.name == "Former Player":
+                        self.former_role = role
+                    for team in "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(","):
+                        if team in role.name:
+                            self.team_roles.append(role)
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
@@ -33,7 +47,8 @@ class Default(commands.Cog):
                  f"Star 3 (Member), Team of the Week (Role), Team of the Week Team Channel (TextChannel)")
 
     @commands.command()
-    async def send(self, ctx, role: discord.role.Role, to_send: discord.channel.TextChannel, week_num: int,
+    @commands.has_permissions(manage_guild=True)
+    async def sotw(self, ctx, role: discord.role.Role, to_send: discord.channel.TextChannel, week_num: int,
                    member1: discord.member.Member, member2: discord.member.Member, member3: discord.member.Member,
                    team_of_week: discord.role.Role, team_channel: discord.channel.TextChannel):
         star = "⭐"
@@ -76,6 +91,32 @@ class Default(commands.Cog):
             i = channel.name.index("⭐")
             name = channel.name[0:i] + channel.name[i+1:]
             await channel.edit(name=name)
+
+    @commands.command()
+    @commands.has_permissions(manage_roles=True)
+    async def sign(self, ctx, player: discord.member.Member, team: discord.role.Role):
+        if self.server_role is None:
+            return
+        try:
+            await player.add_roles(self.server_role, team)
+            await ctx.send(f"Signed <@{player.id}> to <@&{team.id}>")
+        except Exception as e:
+            await ctx.send(f"Failed to sign <@{player.id}> from Electric Mayhem\nReason: {e}")
+            print(e)
+
+    @commands.command()
+    @commands.has_permissions(manage_roles=True)
+    async def cut(self, ctx, player: discord.member.Member):
+        try:
+            await player.remove_roles(self.server_role)
+            await player.add_roles(self.former_role)
+            for role in self.team_roles:
+                if role in player.roles:
+                    await player.remove_roles(role)
+            await ctx.send(f"Cut <@{player.id}> from Electric Mayhem")
+        except Exception as e:
+            await ctx.send(f"Failed to cut <@{player.id}> from Electric Mayhem\nReason: {e}")
+            print(e)
 
 
     @commands.command()
