@@ -51,10 +51,12 @@ class Default(commands.Cog):
 
     @commands.command()
     async def format(self, ctx):
-        await ctx.send(f"Stars\nRole (Role), Channel to Send Message (TextChannel), Week Number (Int), Star 1 (Member), Star 2 (Member), "
+        await ctx.send(f"__Stars__\nRole (Role), Channel to Send Message (TextChannel), Week Number (Int), Star 1 (Member), Star 2 (Member), "
                  f"Star 3 (Member), Team of the Week (Role), Team of the Week Team Channel (TextChannel), "
-                       f"Time to Wait _Optional_ (Seconds)\n\nSign\nPlayer (Member), Team (Role), Time to Wait _Optional"
-                       f"_ (Seconds)\n\nCut\nPlayer (Member), Time to Wait _Optional_ (Seconds)")
+                       f"Time to Wait _Optional_ (Seconds)\n\n__Sign__\nPlayer (Member), Team (Role), Time to Wait _Optional"
+                       f"_ (Seconds)\n\n__Cut__\nPlayer (Member), Time to Wait _Optional_ (Seconds)\n\n__Promote__\n"
+                       f"Player (Member), Team (Role), Time for (xhymzs) Ex. 6h20m30s = 6 hours 20 minutes 30 seconds")
+        await ctx.message.delete()
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
@@ -148,22 +150,34 @@ class Default(commands.Cog):
             print(e)
 
     @commands.command()
-    async def nick(self, ctx):
-        print(ctx.author.nick)
-        # await ctx.send(ctx.author.nick)
+    @commands.has_permissions(manage_roles=True)
+    async def promote(self, ctx, player: discord.member.Member, team: discord.role.Role, time: str):
+        try:
+            await ctx.send(f"Promoting <@{player.id}> for {self.convert_time(time)} seconds.")
+            await player.add_roles(team)
+            await asyncio.sleep(self.convert_time(time))
+            await player.remove_roles(team)
+            await ctx.send(f"Promotion time of <@{player.id}> has ended.")
+        except Exception as e:
+            await ctx.send(f"Failed to promote <@{player.id}>. Reason: {e}")
+            print(e)
 
-
-    #@commands.command()
-    async def setup(self, ctx):
-        guild = ctx.guild
-        # Category/Channel creation
-        category = discord.utils.find(lambda cat: cat.name == "Game Channels", guild.categories)
-        if category is None:
-            category = await guild.create_category("Game Channels")
-        channel = discord.utils.get(category.channels, name="Join for Game Channel", type=discord.ChannelType.voice)
-        if channel is None:
-            channel = await guild.create_voice_channel('Join for Game Channel', category=category)
-        bots_message = await ctx.send("Game channel setup complete.")
-        await ctx.message.delete()
-        await asyncio.sleep(5)
-        await bots_message.delete()
+    @staticmethod
+    def convert_time(string: str):
+        total = 0
+        if "h" in string:
+            i = string.index("h")
+            time = int(string[0:i])
+            total += 60 * 60 * time
+            string = string[i + 1::]
+        if "m" in string:
+            i = string.index("m")
+            time = int(string[0:i])
+            total += 60 * time
+            string = string[i + 1::]
+        if "s" in string:
+            i = string.index("s")
+            time = int(string[0:i])
+            total += time
+            string = string[i + 1::]
+        return total
