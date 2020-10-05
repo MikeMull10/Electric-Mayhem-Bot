@@ -8,23 +8,31 @@ class Default(commands.Cog):
         self.bot = bot
         self.server_role = None
         self.former_role = None
+        self.captain_role = None
+        self.coach_role = None
         self.team_roles = []
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"Logged in and listening as {self.bot.user}!")
-        await self.bot.change_presence(activity=discord.Game(name="being Programmed"))  # Set Discord status
+        await self.bot.change_presence(activity=discord.Game(name="Electric Mayhem"))  # Set Discord status
 
         for guild in self.bot.guilds:
-            if guild.name == "Michael\'s Server":
+            if guild.name == "Electric Mayhem (Flez)":
                 for role in guild.roles:
                     if role.name == "EM|Electric Mayhem":
                         self.server_role = role
                     elif role.name == "Former Player":
                         self.former_role = role
+                    elif role.name == "Captains":
+                        self.captain_role = role
+                    elif role.name == "Coach":
+                        self.coach_role = role
                     for team in "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(","):
                         if team in role.name:
                             self.team_roles.append(role)
+
+        # print(self.server_role, self.former_role, self.captain_role, self.coach_role)
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
@@ -43,14 +51,18 @@ class Default(commands.Cog):
 
     @commands.command()
     async def format(self, ctx):
-        await ctx.send(f"Role (Role), Channel to Send Message (TextChannel), Week Number (Int), Star 1 (Member), Star 2 (Member), "
-                 f"Star 3 (Member), Team of the Week (Role), Team of the Week Team Channel (TextChannel)")
+        await ctx.send(f"Stars\nRole (Role), Channel to Send Message (TextChannel), Week Number (Int), Star 1 (Member), Star 2 (Member), "
+                 f"Star 3 (Member), Team of the Week (Role), Team of the Week Team Channel (TextChannel), "
+                       f"Time to Wait _Optional_ (Seconds)\n\nSign\nPlayer (Member), Team (Role), Time to Wait _Optional"
+                       f"_ (Seconds)\n\nCut\nPlayer (Member), Time to Wait _Optional_ (Seconds)")
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
-    async def sotw(self, ctx, role: discord.role.Role, to_send: discord.channel.TextChannel, week_num: int,
+    async def stars(self, ctx, role: discord.role.Role, to_send: discord.channel.TextChannel, week_num: int,
                    member1: discord.member.Member, member2: discord.member.Member, member3: discord.member.Member,
-                   team_of_week: discord.role.Role, team_channel: discord.channel.TextChannel):
+                   team_of_week: discord.role.Role, team_channel: discord.channel.TextChannel, wait_time=0):
+        await asyncio.sleep(wait_time)
+
         star = "⭐"
         members_with_role = []
         star_members = [member1, member2, member3]
@@ -67,7 +79,10 @@ class Default(commands.Cog):
             if member not in star_members:
                 await self.remove_star(member)
             elif member in star_members:
-                nick = member.nick + star
+                if member.nick is None:
+                    nick = member.name + star
+                else:
+                    nick = member.nick + star
                 await member.edit(nick=nick)
 
         for channel in channels_in_category:
@@ -77,10 +92,13 @@ class Default(commands.Cog):
                 await self.remove_star_chat(channel)
 
         await to_send.send(f"Hello <@&{role.id}>, here are your 3 Stars of the Week for Week {week_num}, <@{member1.id}>,"
-                       f"<@{member2.id}>, and <@{member3.id}>, and your team of the week <@&{team_of_week.id}>!",
+                       f" <@{member2.id}>, and <@{member3.id}>, and your team of the week <@&{team_of_week.id}>!",
                        file=File("./Stars of the Week.png", spoiler=False))
 
     async def remove_star(self, member):
+        if member.nick is None:
+            print(f"{member.name} has no nickname.")
+            return
         while "⭐" in member.nick:
             i = member.nick.index("⭐")
             nick = member.nick[0:i] + member.nick[i+1:]
@@ -94,7 +112,9 @@ class Default(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_roles=True)
-    async def sign(self, ctx, player: discord.member.Member, team: discord.role.Role):
+    async def sign(self, ctx, player: discord.member.Member, team: discord.role.Role, wait_time=0):
+        await asyncio.sleep(int(wait_time))
+
         if self.server_role is None:
             return
         try:
@@ -106,10 +126,19 @@ class Default(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_roles=True)
-    async def cut(self, ctx, player: discord.member.Member):
+    async def cut(self, ctx, player: discord.member.Member, wait_time=0):
+        await asyncio.sleep(int(wait_time))
+
         try:
             await player.remove_roles(self.server_role)
             await player.add_roles(self.former_role)
+
+            if self.captain_role in player.roles:
+                await player.remove_roles(self.captain_role)
+
+            if self.coach_role in player.roles:
+                await player.remove_roles(self.coach_role)
+
             for role in self.team_roles:
                 if role in player.roles:
                     await player.remove_roles(role)
@@ -118,8 +147,13 @@ class Default(commands.Cog):
             await ctx.send(f"Failed to cut <@{player.id}> from Electric Mayhem\nReason: {e}")
             print(e)
 
-
     @commands.command()
+    async def nick(self, ctx):
+        print(ctx.author.nick)
+        # await ctx.send(ctx.author.nick)
+
+
+    #@commands.command()
     async def setup(self, ctx):
         guild = ctx.guild
         # Category/Channel creation
