@@ -162,6 +162,24 @@ class Default(commands.Cog):
             await ctx.send(f"Failed to promote <@{player.id}>. Reason: {e}")
             print(e)
 
+    @commands.command()
+    @commands.has_permissions(manage_roles=True)
+    async def tempsub(self, ctx, player: discord.member.Member, team: discord.role.Role, time: str, channel=None, msg=None):
+        try:
+            await ctx.send(f"Subbing <@{player.id}> for {self.convert_time(time)} seconds.")
+            await player.add_roles(team, self.server_role)
+
+            if channel is not None and msg is not None:
+                await channel.send(f"Welcome to Electric Mayhem, <@{player.id}! Thank you for subbing tonight for <@&{team.id}!")
+
+            await asyncio.sleep(self.convert_time(time))
+            await player.remove_roles(team)
+            await player.add_roles(self.former_role)
+            await ctx.send(f"Sub time of <@{player.id}> has ended.")
+        except Exception as e:
+            await ctx.send(f"Failed to tempsub <@{player.id}>. Reason: {e}")
+            print(e)
+
     @staticmethod
     def convert_time(string: str):
         total = 0
