@@ -2,6 +2,7 @@ import asyncio
 import discord
 from discord import File as File
 from discord.ext import commands
+from random import choice
 
 class Default(commands.Cog):
     def __init__(self, bot):
@@ -179,6 +180,25 @@ class Default(commands.Cog):
         except Exception as e:
             await ctx.send(f"Failed to tempsub <@{player.id}>. Reason: {e}")
             print(e)
+
+    @commands.command()
+    async def sleep(self, ctx, channel: discord.channel.TextChannel, hours: int, increment: int):
+        gunkiller = None
+        for member in ctx.guild.members:
+            if "gunkiller" in member.name.lower():
+                gunkiller = member
+                break
+        if gunkiller is None:
+            return
+        images = "Sleep,Sleep 2,Sleep 3, Sleep 4".split(",")
+        phrases = "Tired Sleepy Exhausted Drowsy Drained Fatigued Overworked".split(" ")
+        for i in range(int((hours * 60 * 60)/(increment*60))):
+            try:
+                await channel.send(f"{choice(phrases)} <@{gunkiller.id}>?", file=File(f"./{choice(images)}.gif"))
+                await asyncio.sleep(increment * 60)
+            except Exception as e:
+                ctx.send(f"Failed. Reason: {e}")
+                print(e)
 
     @staticmethod
     def convert_time(string: str):
