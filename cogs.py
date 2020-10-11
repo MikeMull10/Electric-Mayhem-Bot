@@ -97,6 +97,8 @@ class Default(commands.Cog):
         await to_send.send(f"Hello <@&{role.id}>, here are your 3 Stars of the Week for Week {week_num}, <@{member1.id}>,"
                        f" <@{member2.id}>, and <@{member3.id}>, and your team of the week <@&{team_of_week.id}>!",
                        file=File("./Stars of the Week.png", spoiler=False))
+        await team_channel.send(f"Congrats on team of the week <@&{team_of_week}>!")
+        await ctx.send(f"Stars of the week for week {week_num} was successful!")
 
     async def remove_star(self, member):
         if member.nick is None:
@@ -106,6 +108,8 @@ class Default(commands.Cog):
             i = member.nick.index("⭐")
             nick = member.nick[0:i] + member.nick[i+1:]
             await member.edit(nick=nick)
+            if member.nick is None:
+                return
 
     async def remove_star_chat(self, channel):
         while "⭐" in channel.name:
@@ -195,6 +199,18 @@ class Default(commands.Cog):
         for i in range(int((hours * 60 * 60)/(increment*60))):
             try:
                 await channel.send(f"{choice(phrases)} <@{gunkiller.id}>?", file=File(f"./{choice(images)}.gif"))
+                await asyncio.sleep(increment * 60)
+            except Exception as e:
+                ctx.send(f"Failed. Reason: {e}")
+                print(e)
+
+    @commands.command()
+    async def bread(self, ctx, channel: discord.channel.TextChannel, bread: discord.member.Member, hours: int, increment: int):
+        images = "Banned,Banned 2".split(",")
+        phrases = "Banned".split(" ")
+        for i in range(int((hours * 60 * 60) / (increment * 60))):
+            try:
+                await channel.send(f"{choice(phrases)} <@{bread.id}>?", file=File(f"./{choice(images)}.jpeg"))
                 await asyncio.sleep(increment * 60)
             except Exception as e:
                 ctx.send(f"Failed. Reason: {e}")
