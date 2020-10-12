@@ -216,6 +216,10 @@ class Default(commands.Cog):
                 ctx.send(f"Failed. Reason: {e}")
                 print(e)
 
+    @commands.command()
+    async def id(self, ctx, member: discord.member.Member):
+        await ctx.send(f"{member.id}")
+
     @staticmethod
     def convert_time(string: str):
         total = 0
