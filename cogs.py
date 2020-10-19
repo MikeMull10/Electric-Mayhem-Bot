@@ -82,11 +82,14 @@ class Default(commands.Cog):
             if member not in star_members:
                 await self.remove_star(member)
             elif member in star_members:
-                if member.nick is None:
-                    nick = member.name + star
-                else:
-                    nick = member.nick + star
-                await member.edit(nick=nick)
+                try:
+                    if member.nick is None:
+                        nick = member.name + star
+                    else:
+                        nick = member.nick + star
+                    await member.edit(nick=nick)
+                except Exception as e:
+                    ctx.send(f"{e}")
 
         for channel in channels_in_category:
             if channel == team_channel:
@@ -94,11 +97,36 @@ class Default(commands.Cog):
             else:
                 await self.remove_star_chat(channel)
 
-        await to_send.send(f"Hello <@&{role.id}>, here are your 3 Stars of the Week for Week {week_num}, <@{member1.id}>,"
+        msg = await to_send.send(f"Hello <@&{role.id}>, here are your 3 Stars of the Week for Week {week_num}, <@{member1.id}>,"
                        f" <@{member2.id}>, and <@{member3.id}>, and your team of the week <@&{team_of_week.id}>!",
                        file=File("./Stars of the Week.png", spoiler=False))
-        await team_channel.send(f"Congrats on team of the week <@&{team_of_week}>!")
+        try:
+            await msg.add_reaction(ctx.guild.get_emoji(563508808073216021))
+        except Exception as e:
+            ctx.send(f"{e}")
+        await team_channel.send(f"Congrats on team of the week <@&{team_of_week.id}>!")
         await ctx.send(f"Stars of the week for week {week_num} was successful!")
+
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def give_star(self, ctx, member: discord.member.Member):
+        star = "⭐"
+        if member.nick is None:
+            nick = member.name + star
+        else:
+            nick = member.nick + star
+        await member.edit(nick=nick)
+
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def show_stars(self, ctx):
+        await ctx.send(file=File("./Stars of the Week.png"))
+
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def emojis(self, ctx):
+        for emoji in ctx.guild.emojis:
+            await ctx.send(f"{emoji}:{emoji.id}")
 
     async def remove_star(self, member):
         if member.nick is None:
