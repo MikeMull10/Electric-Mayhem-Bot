@@ -4,5 +4,9 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Snake Online" />
+    <orderEntry type="module" module-name="Joystick" />
+    <orderEntry type="module" module-name="Discord-Bot-Server-Handler" />
+    <orderEntry type="module" module-name="EM-Stats" />
   </component>
 </module>
