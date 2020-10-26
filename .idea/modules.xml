@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/Discord-Bot-Server-Handler.iml" filepath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/Discord-Bot-Server-Handler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../EM-Stats/.idea/EM-Stats.iml" filepath="$PROJECT_DIR$/../EM-Stats/.idea/EM-Stats.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Electric-Mayhem-Bot.iml" filepath="$PROJECT_DIR$/.idea/Electric-Mayhem-Bot.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/Joystick/.idea/Joystick.iml" filepath="$USER_HOME$/PycharmProjects/Joystick/.idea/Joystick.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Snake-Online/.idea/Snake Online.iml" filepath="$PROJECT_DIR$/../Snake-Online/.idea/Snake Online.iml" />
     </modules>
   </component>
 </project>

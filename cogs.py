@@ -80,7 +80,10 @@ class Default(commands.Cog):
 
         for member in members_with_role:
             if member not in star_members:
-                await self.remove_star(member)
+                try:
+                    await self.remove_star(member)
+                except Exception as e:
+                    ctx.send(f"{e}")
             elif member in star_members:
                 try:
                     if member.nick is None:
