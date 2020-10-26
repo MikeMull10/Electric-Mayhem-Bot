@@ -2,18 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="283f0b60-e66e-4f99-8c8a-092a201c89c1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/Discord-Bot-Server-Handler.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/Discord-Bot-Server-Handler.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/config.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/config.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EM-Stats/Names.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../EM-Stats/Names.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Electric-Mayhem-Bot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Electric-Mayhem-Bot.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Snake-Online/client/client_ui_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Snake-Online/client/client_ui_new.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,7 +26,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../EM-Stats" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1isRkHgxCGHwMSQcLHtwImP8LpD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
