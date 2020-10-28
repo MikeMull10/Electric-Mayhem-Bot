@@ -39,8 +39,8 @@ class Default(commands.Cog):
     async def on_message(self, ctx):
         if ctx.author == self.bot.user:
             return
-        if 'hello' in ctx.content.lower():
-            await ctx.channel.send("Hello!")
+        # if 'hello' in ctx.content.lower():
+        #     await ctx.channel.send("Hello!")
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -164,26 +164,25 @@ class Default(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_roles=True)
-    async def cut(self, ctx, player: discord.member.Member, wait_time=0):
-        await asyncio.sleep(int(wait_time))
+    async def cut(self, ctx, *players: discord.member.Member):
+        for player in players:
+            try:
+                await player.remove_roles(self.server_role)
+                await player.add_roles(self.former_role)
 
-        try:
-            await player.remove_roles(self.server_role)
-            await player.add_roles(self.former_role)
+                if self.captain_role in player.roles:
+                    await player.remove_roles(self.captain_role)
 
-            if self.captain_role in player.roles:
-                await player.remove_roles(self.captain_role)
+                if self.coach_role in player.roles:
+                    await player.remove_roles(self.coach_role)
 
-            if self.coach_role in player.roles:
-                await player.remove_roles(self.coach_role)
-
-            for role in self.team_roles:
-                if role in player.roles:
-                    await player.remove_roles(role)
-            await ctx.send(f"Cut <@{player.id}> from Electric Mayhem")
-        except Exception as e:
-            await ctx.send(f"Failed to cut <@{player.id}> from Electric Mayhem\nReason: {e}")
-            print(e)
+                for role in self.team_roles:
+                    if role in player.roles:
+                        await player.remove_roles(role)
+                await ctx.send(f"Cut <@{player.id}> from Electric Mayhem")
+            except Exception as e:
+                await ctx.send(f"Failed to cut <@{player.id}> from Electric Mayhem\nReason: {e}")
+                print(e)
 
     @commands.command()
     @commands.has_permissions(manage_roles=True)
@@ -215,37 +214,6 @@ class Default(commands.Cog):
         except Exception as e:
             await ctx.send(f"Failed to tempsub <@{player.id}>. Reason: {e}")
             print(e)
-
-    @commands.command()
-    async def sleep(self, ctx, channel: discord.channel.TextChannel, hours: int, increment: int):
-        gunkiller = None
-        for member in ctx.guild.members:
-            if "gunkiller" in member.name.lower():
-                gunkiller = member
-                break
-        if gunkiller is None:
-            return
-        images = "Sleep,Sleep 2,Sleep 3, Sleep 4".split(",")
-        phrases = "Tired Sleepy Exhausted Drowsy Drained Fatigued Overworked".split(" ")
-        for i in range(int((hours * 60 * 60)/(increment*60))):
-            try:
-                await channel.send(f"{choice(phrases)} <@{gunkiller.id}>?", file=File(f"./{choice(images)}.gif"))
-                await asyncio.sleep(increment * 60)
-            except Exception as e:
-                ctx.send(f"Failed. Reason: {e}")
-                print(e)
-
-    @commands.command()
-    async def bread(self, ctx, channel: discord.channel.TextChannel, bread: discord.member.Member, hours: int, increment: int):
-        images = "Banned,Banned 2".split(",")
-        phrases = "Banned".split(" ")
-        for i in range(int((hours * 60 * 60) / (increment * 60))):
-            try:
-                await channel.send(f"{choice(phrases)} <@{bread.id}>?", file=File(f"./{choice(images)}.jpeg"))
-                await asyncio.sleep(increment * 60)
-            except Exception as e:
-                ctx.send(f"Failed. Reason: {e}")
-                print(e)
 
     @commands.command()
     async def id(self, ctx, member: discord.member.Member):
