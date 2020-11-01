@@ -106,7 +106,7 @@ class Default(commands.Cog):
         try:
             await msg.add_reaction(ctx.guild.get_emoji(563508808073216021))
         except Exception as e:
-            ctx.send(f"{e}")
+            await ctx.send(f"{e}")
         await team_channel.send(f"Congrats on team of the week <@&{team_of_week.id}>!")
         await ctx.send(f"Stars of the week for week {week_num} was successful!")
 
