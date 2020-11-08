@@ -143,8 +143,6 @@ class Default(commands.Cog):
         for channel in channels_in_category:
             if channel == team_channel:
                 await channel.edit(name=channel.name + star)
-            else:
-                await self.remove_star_chat(channel)
 
         msg = await to_send.send(
             f"Hello <@&{role.id}>, here are your 3 Stars of the Week for Week {week_num}, <@{member1.id}>,"
