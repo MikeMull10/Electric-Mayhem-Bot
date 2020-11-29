@@ -12,6 +12,7 @@ class Default(commands.Cog):
         self.captain_role = None
         self.coach_role = None
         self.team_roles = []
+        self.saved_message = ""
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -34,6 +35,31 @@ class Default(commands.Cog):
                             self.team_roles.append(role)
 
         # print(self.server_role, self.former_role, self.captain_role, self.coach_role)
+
+    @commands.command()
+    async def send(self, ctx, member: discord.member.Member, *message):
+        mes = ""
+        for m in message:
+            mes += str(m) + " "
+        await member.send(f"{mes[:-1]}")
+        await ctx.send(f"Message sent to <@{member.id}> member.")
+
+    @commands.command()
+    async def send_saved_message(self, ctx, *members: discord.member.Member):
+        for member in members:
+            await member.send(f"{self.saved_message}")
+        await ctx.send(f"Messages sent to {len(members)} members.")
+
+    @commands.command()
+    async def save_message(self, ctx, *message):
+        mes = ""
+        for m in message:
+            mes += str(m) + " "
+        self.saved_message = f"{mes[:-1]}"
+        msg= await ctx.send(f"Saved Message: \"{self.saved_message}\"")
+        await asyncio.sleep(30)
+        await ctx.message.delete()
+        await msg.delete()
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
