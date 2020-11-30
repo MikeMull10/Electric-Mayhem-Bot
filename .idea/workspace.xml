@@ -8,16 +8,11 @@
       <change beforePath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/config.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Discord-Bot-Server-Handler/config.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EM-Stats/Names.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../EM-Stats/Names.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EM-Stats/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../EM-Stats/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Electric-Mayhem-Bot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Electric-Mayhem-Bot.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banned 2.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banned.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sleep 2.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sleep 3.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sleep 4.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sleep.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Snake-Online/client/client_ui_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Snake-Online/client/client_ui_new.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,14 +29,21 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../EM-Stats" />
   </component>
   <component name="ProjectId" id="1isRkHgxCGHwMSQcLHtwImP8LpD" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../EM-Stats" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Tryout-Bot" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\mmull\Documents\GitHub\Tryout-Bot" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -98,27 +100,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="joystick_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Joystick" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/PycharmProjects/Joystick" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/PycharmProjects/Joystick/joystick_main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Electric-Mayhem-Bot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -132,6 +113,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Tryout-Bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Tryout-Bot" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Tryout-Bot/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -164,10 +166,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.main (2)" />
         <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.Xlsx Test" />
         <item itemvalue="Python.Defs" />
-        <item itemvalue="Python.joystick_main" />
       </list>
     </recent_temporary>
   </component>
