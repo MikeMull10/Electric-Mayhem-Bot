@@ -10,9 +10,9 @@ def get_key(key):
 
 bot = commands.Bot(command_prefix=get_key("prefix"))
 
-@bot.event
-async def on_command_error(ctx, error):
-    await ctx.send(error)
+# @bot.event
+# async def on_command_error(ctx, error):
+#     await ctx.send(error)
 
 cogs = [Default(bot)]
 for cog in cogs:

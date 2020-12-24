@@ -1,18 +1,23 @@
-import asyncio
-import discord
 from discord import File as File
 from discord.ext import commands
-from random import choice
+from Defs import PlayerStats, get_stats, get_stat
+import requests
+import asyncio
+import discord
+import bs4
 
 class Default(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.server_role = None
-        self.former_role = None
-        self.captain_role = None
-        self.coach_role = None
+        self.server_role, self.former_role, self.captain_role, self.coach_role = None, None, None, None
         self.team_roles = []
         self.saved_message = ""
+
+        self.link = "https://www.rocketsoccarconfederation.com/na/s9-stats/s9-player-stats/"
+        self.tiers = "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(",")
+
+        self.stats = []
+        self.stats_names = []
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -30,9 +35,9 @@ class Default(commands.Cog):
                         self.captain_role = role
                     elif role.name == "Coach":
                         self.coach_role = role
-                    for team in "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(","):
-                        if team in role.name:
-                            self.team_roles.append(role)
+                    # for team in "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(","):
+                    #     if team in role.name:
+                    #         self.team_roles.append(role)
 
         # print(self.server_role, self.former_role, self.captain_role, self.coach_role)
 
@@ -72,9 +77,65 @@ class Default(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, arg: int):
         print(f"Clearing {arg} messages.")
-        messages = await ctx.channel.history(limit=arg).flatten()
+        messages = await ctx.channel.history(limit=arg + 1).flatten()
         for message in reversed(messages):
             await message.delete()
+
+    @commands.command()
+    async def stats(self, ctx, *player):
+        player_name = ""
+        for p in player:
+            player_name += p + " "
+        player_name = player_name[:-1]
+
+        # await ctx.send(str(player_stats))
+
+    @commands.command()
+    async def collect_stats(self, ctx):
+        stats = bs4.BeautifulSoup(requests.get(self.link).text, "lxml")
+        table_nums = [i for i in range(446, 455)]
+        tables = []
+
+        for num in table_nums:
+            tables.append(stats.find(id=f"tablepress-{num}"))
+
+        for a, table in enumerate(tables):
+
+            table_sliced = None
+            for i, _line in enumerate(table):
+                if i == 3:
+                    table_sliced = str(_line).split("</tr>")
+
+            for stats in table_sliced:
+                name = get_stat(stats, "column-1")
+                if name is None:
+                    continue
+                self.stats.append(PlayerStats(self.tiers[a], name, get_stats(stats)))
+                self.stats_names.append(name)
+        # for stat in self.stats:
+        #     print(stat)
+        print(self.stats_names)
+
+    def get_stats_pos(self, user):
+        if user not in self.stats_names:
+            return -1
+        for i, name in enumerate(self.stats_names):
+            if name == user:
+                return i
+
+    def remove_duplicates(self):
+        for name in self.stats_names:
+            stats = []
+            for stat in self.stats:
+                if stat.name == name:
+                    stats.append(stat)
+
+    def get_instances_of(self, item, l):
+        ret = 0
+        for it in l:
+            if it == item:
+                ret += 1
+        return ret
 
     @commands.command()
     async def format(self, ctx):
