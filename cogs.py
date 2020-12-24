@@ -1,6 +1,6 @@
 from discord import File as File
 from discord.ext import commands
-from Defs import PlayerStats, get_stats, get_stat
+from Defs import PlayerStats, get_stats, get_stat, titles
 import requests
 import asyncio
 import discord
@@ -18,6 +18,7 @@ class Default(commands.Cog):
 
         self.stats = []
         self.stats_names = []
+        self.table_min = 446
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -88,12 +89,30 @@ class Default(commands.Cog):
             player_name += p + " "
         player_name = player_name[:-1]
 
-        # await ctx.send(str(player_stats))
+        if self.stats == []:
+            await self.collect_stats(ctx)
+
+        for stat in self.stats:
+            if stat.name.lower() == player_name.lower():
+                embed = discord.Embed(
+                    title = f"{player_name}\'s Stats",
+                    colour = self.get_color_from_tier(stat.tier)
+                )
+                embed.set_thumbnail(url="https://www.rocketsoccarconfederation.com/wp-content/uploads/2018/01/cropped-rsc-logo-500-1.png")
+
+                embed.add_field(name="Tier", value=stat.tier, inline=True)
+
+                for i, title in enumerate(titles[2::]):
+                    embed.add_field(name=title, value=stat.stats[i], inline=True)
+
+                await ctx.send(embed=embed)
+                return
+        await ctx.send(f"Player \'{player_name}\' not Found")
 
     @commands.command()
     async def collect_stats(self, ctx):
         stats = bs4.BeautifulSoup(requests.get(self.link).text, "lxml")
-        table_nums = [i for i in range(446, 455)]
+        table_nums = [i for i in range(self.table_min, self.table_min + 9)]
         tables = []
 
         for num in table_nums:
@@ -112,9 +131,30 @@ class Default(commands.Cog):
                     continue
                 self.stats.append(PlayerStats(self.tiers[a], name, get_stats(stats)))
                 self.stats_names.append(name)
-        # for stat in self.stats:
-        #     print(stat)
-        print(self.stats_names)
+
+        self.remove_duplicates()
+
+    def get_color_from_tier(self, tier):
+        if tier == "Premier":
+            return discord.Colour.from_rgb(255, 0, 255)
+        elif tier == "Master":
+            return discord.Colour.from_rgb(148, 115, 199)
+        elif tier == "Elite":
+            return discord.Colour.from_rgb(96, 167, 224)
+        elif tier == "Major":
+            return discord.Colour.from_rgb(79, 175, 70)
+        elif tier == "Minor":
+            return discord.Colour.from_rgb(255, 220, 80)
+        elif tier == "Challenger":
+            return discord.Colour.from_rgb(243, 141, 18)
+        elif tier == "Prospect":
+            return discord.Colour.from_rgb(243, 141, 18)
+        elif tier == "Contender":
+            return discord.Colour.from_rgb(222, 35, 0)
+        elif tier == "Amateur":
+            return discord.Colour.from_rgb(252, 201, 203)
+        else:
+            return None
 
     def get_stats_pos(self, user):
         if user not in self.stats_names:
@@ -129,13 +169,16 @@ class Default(commands.Cog):
             for stat in self.stats:
                 if stat.name == name:
                     stats.append(stat)
-
-    def get_instances_of(self, item, l):
-        ret = 0
-        for it in l:
-            if it == item:
-                ret += 1
-        return ret
+            if len(stats) == 1:
+                continue
+            most_games, games = None, 0
+            for stat in stats:
+                if stat.games_played > games:
+                    games = stat.games_played
+                    most_games = stat
+            for stat in stats:
+                if stat != most_games:
+                    self.stats.remove(stat)
 
     @commands.command()
     async def format(self, ctx):
