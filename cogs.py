@@ -148,7 +148,7 @@ class Default(commands.Cog):
         elif tier == "Challenger":
             return discord.Colour.from_rgb(243, 141, 18)
         elif tier == "Prospect":
-            return discord.Colour.from_rgb(243, 141, 18)
+            return discord.Colour.from_rgb(224, 102, 102)
         elif tier == "Contender":
             return discord.Colour.from_rgb(222, 35, 0)
         elif tier == "Amateur":
