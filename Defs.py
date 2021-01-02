@@ -2,6 +2,11 @@ alphabet = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
 titles = "Name, Tier, Games Played, Games Won, Games Lost, Win Percentage, MVPs, Points, Goals, Assists, Saves, Shots, " \
          "Shot Percentage, Points per Game, Goals per Game, Assists per Game, Saves per Game, Shots per Game, Cycles, Hat Tricks, " \
          "Playmakers, Saviors".split(", ")
+def get_key(key):
+    lines = open("text_config.txt", "r").readlines()
+    for line in lines:
+        if line.startswith(key):
+            return line[line.find(":") + 1:].replace("\n", "")
 
 
 class PlayerStats:

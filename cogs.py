@@ -1,6 +1,6 @@
 from discord import File as File
 from discord.ext import commands
-from Defs import PlayerStats, get_stats, get_stat, titles
+from Defs import PlayerStats, get_stats, get_stat, titles, get_key
 import requests
 import asyncio
 import discord
@@ -414,22 +414,27 @@ class Default(commands.Cog):
 
     @commands.command()
     async def shutdown(self, ctx):
-        author_id = str(ctx.author.id)
+        author_id = ctx.author.id
         if author_id == 336146049053753346:
             await ctx.send('Shutting down the bot!')
             await ctx.bot.logout()
         else:
-            await ctx.send("You don\'t have sufficient permissions to perform this action!")
+            await ctx.send(f"You don\'t have sufficient permissions to perform this action!")
 
     @commands.command()
     async def restart(self, ctx):
-        author_id = str(ctx.author.id)
+        author_id = ctx.author.id
         if author_id == 336146049053753346:
-            await ctx.send('Shutting down the bot!')
+            await ctx.send('Restarting the bot!')
             await ctx.bot.logout()
-            await ctx.bot.login()
+            await asyncio.sleep(1)
+            await ctx.bot.login(get_key("token"))
         else:
-            await ctx.send("You don\'t have sufficient permissions to perform this action!")
+            await ctx.send(f"You don\'t have sufficient permissions to perform this action!")
+
+    @commands.command()
+    async def ping(self, ctx):
+        await ctx.send("Pong")
 
     @staticmethod
     def convert_time(string: str):

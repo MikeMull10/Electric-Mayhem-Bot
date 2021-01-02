@@ -1,18 +1,11 @@
 from discord.ext import commands
 from cogs import *
 
-lines = open("text_config.txt", "r").readlines()
-def get_key(key):
-    for line in lines:
-        if line.startswith(key):
-            return line[line.find(":") + 1:].replace("\n", "")
-
-
 bot = commands.Bot(command_prefix=get_key("prefix"))
 
-# @bot.event
-# async def on_command_error(ctx, error):
-#     await ctx.send(error)
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.send(error)
 
 cogs = [Default(bot)]
 for cog in cogs:
