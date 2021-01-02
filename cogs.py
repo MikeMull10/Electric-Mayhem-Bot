@@ -412,6 +412,25 @@ class Default(commands.Cog):
     async def id(self, ctx, member: discord.member.Member):
         await ctx.send(f"{member.id}")
 
+    @commands.command()
+    async def shutdown(self, ctx):
+        author_id = str(ctx.author.id)
+        if author_id == 336146049053753346:
+            await ctx.send('Shutting down the bot!')
+            await ctx.bot.logout()
+        else:
+            await ctx.send("You don\'t have sufficient permissions to perform this action!")
+
+    @commands.command()
+    async def restart(self, ctx):
+        author_id = str(ctx.author.id)
+        if author_id == 336146049053753346:
+            await ctx.send('Shutting down the bot!')
+            await ctx.bot.logout()
+            await ctx.bot.login()
+        else:
+            await ctx.send("You don\'t have sufficient permissions to perform this action!")
+
     @staticmethod
     def convert_time(string: str):
         total = 0
