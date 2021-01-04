@@ -327,9 +327,7 @@ class Default(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_roles=True)
-    async def sign(self, ctx, player: discord.member.Member, team: discord.role.Role, wait_time=0):
-        await asyncio.sleep(int(wait_time))
-
+    async def sign(self, ctx, player: discord.member.Member, team: discord.role.Role, post_channel: discord.TextChannel=None):
         if self.server_role is None:
             return
         try:
@@ -338,6 +336,13 @@ class Default(commands.Cog):
         except Exception as e:
             await ctx.send(f"Failed to sign <@{player.id}> from Electric Mayhem\nReason: {e}")
             print(e)
+        if post_channel is not None:
+            try:
+                i = str(team.name).index("(")
+                await post_channel.send(f"Welcome to the {str(team.name)[0:i - 1]}, <@{player.id}>!")
+            except:
+                return
+
 
     @commands.command()
     @commands.has_permissions(manage_roles=True)
