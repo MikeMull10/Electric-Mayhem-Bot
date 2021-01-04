@@ -341,7 +341,7 @@ class Default(commands.Cog):
                 i = str(team.name).index("(")
                 await post_channel.send(f"Welcome to the {str(team.name)[0:i - 1]}, <@{player.id}>!")
             except:
-                return
+                pass
 
 
     @commands.command()
