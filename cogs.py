@@ -9,7 +9,7 @@ import bs4
 class Default(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.server_role, self.former_role, self.captain_role, self.coach_role = None, None, None, None
+        self.server_role, self.former_role, self.captain_role, self.coach_role, self.scout_role = None, None, None, None, None
         self.team_roles = []
         self.saved_message = ""
 
@@ -36,9 +36,11 @@ class Default(commands.Cog):
                         self.captain_role = role
                     elif role.name == "Coach":
                         self.coach_role = role
-                    # for team in "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(","):
-                    #     if team in role.name:
-                    #         self.team_roles.append(role)
+                    elif role.name == "Scout":
+                        self.scout_role = role
+                    for team in "Chargers (Premier),Blackout (Master),Bolts (Elite),Lightning (Major),Surge (Minor),Shock (Challenger),Sparks (Prospect),Thunder Buddies (Contender),Watts (Amateur)".split(","):
+                        if team in role.name:
+                            self.team_roles.append(role)
 
         # print(self.server_role, self.former_role, self.captain_role, self.coach_role)
 
@@ -352,15 +354,12 @@ class Default(commands.Cog):
                 await player.remove_roles(self.server_role)
                 await player.add_roles(self.former_role)
 
-                if self.captain_role in player.roles:
-                    await player.remove_roles(self.captain_role)
-
-                if self.coach_role in player.roles:
-                    await player.remove_roles(self.coach_role)
+                await player.remove_roles(self.captain_role)
+                await player.remove_roles(self.coach_role)
+                await player.remove_roles(self.scout_role)
 
                 for role in self.team_roles:
-                    if role in player.roles:
-                        await player.remove_roles(role)
+                    await player.remove_roles(role)
                 await ctx.send(f"Cut <@{player.id}> from Electric Mayhem")
             except Exception as e:
                 await ctx.send(f"Failed to cut <@{player.id}> from Electric Mayhem\nReason: {e}")
@@ -402,16 +401,21 @@ class Default(commands.Cog):
                   minor: discord.member.Member, challenger: discord.member.Member, prospect: discord.member.Member, contender: discord.member.Member, amateur: discord.member.Member, time_to_wait=""):
         await asyncio.sleep(self.convert_time(time_to_wait))
         await channel.send(f"Hello <@&{role}>. Here are the results of the MVP voting:\n\n"
-                       f"<@&{self.team_roles[0].id}>: <@{master.id}>\n"
-                       f"<@&{self.team_roles[1].id}>: <@{elite.id}>\n"
-                       f"<@&{self.team_roles[2].id}>: <@{major.id}>\n"
-                       f"<@&{self.team_roles[3].id}>: <@{minor.id}>\n"
-                       f"<@&{self.team_roles[4].id}>: <@{challenger.id}>\n"
-                       f"<@&{self.team_roles[5].id}>: <@{prospect.id}>\n"
-                       f"<@&{self.team_roles[6].id}>: <@{contender.id}>\n"
-                       f"<@&{self.team_roles[7].id}>: <@{amateur.id}>\n\n"
+                       f"<@&{self.team_roles[1].id}>: <@{master.id}>\n"
+                       f"<@&{self.team_roles[2].id}>: <@{elite.id}>\n"
+                       f"<@&{self.team_roles[3].id}>: <@{major.id}>\n"
+                       f"<@&{self.team_roles[4].id}>: <@{minor.id}>\n"
+                       f"<@&{self.team_roles[5].id}>: <@{challenger.id}>\n"
+                       f"<@&{self.team_roles[6].id}>: <@{prospect.id}>\n"
+                       f"<@&{self.team_roles[7].id}>: <@{contender.id}>\n"
+                       f"<@&{self.team_roles[8].id}>: <@{amateur.id}>\n\n"
                        f"Thank you all for a wonderful season 9!")
         await ctx.send(f"MVP Vote successfully sent out.")
+
+    @commands.command()
+    async def show_roles(self, ctx):
+        for role in self.team_roles:
+            await ctx.send(f"<@&{role.id}>")
 
     @commands.command()
     async def id(self, ctx, member: discord.member.Member):
