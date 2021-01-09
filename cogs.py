@@ -42,8 +42,6 @@ class Default(commands.Cog):
                         if team in role.name:
                             self.team_roles.append(role)
 
-        # print(self.server_role, self.former_role, self.captain_role, self.coach_role)
-
     @commands.command()
     async def set_status(self, ctx, *status):
         s = ""
@@ -81,8 +79,6 @@ class Default(commands.Cog):
     async def on_message(self, ctx):
         if ctx.author == self.bot.user:
             return
-        # if 'hello' in ctx.content.lower():
-        #     await ctx.channel.send("Hello!")
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -99,14 +95,14 @@ class Default(commands.Cog):
             player_name += p + " "
         player_name = player_name[:-1]
 
-        if self.stats == []:
-            await self.collect_stats(ctx)
+        if self.stats is []:
+            await self.update_stats(ctx)
 
         for stat in self.stats:
             if stat.name.lower() == player_name.lower():
                 embed = discord.Embed(
-                    title = f"{player_name}\'s Stats",
-                    colour = self.get_color_from_tier(stat.tier)
+                    title=f"{player_name}\'s Stats",
+                    colour=self.get_color_from_tier(stat.tier)
                 )
                 embed.set_thumbnail(url="https://www.rocketsoccarconfederation.com/wp-content/uploads/2018/01/cropped-rsc-logo-500-1.png")
 
@@ -120,7 +116,10 @@ class Default(commands.Cog):
         await ctx.send(f"Player \'{player_name}\' not Found")
 
     @commands.command()
-    async def collect_stats(self, ctx):
+    async def update_stats(self, ctx):
+        self.stats = []
+        self.stats_names = []
+
         stats = bs4.BeautifulSoup(requests.get(self.link).text, "lxml")
         table_nums = [i for i in range(self.table_min, self.table_min + 9)]
         tables = []
@@ -144,7 +143,8 @@ class Default(commands.Cog):
 
         self.remove_duplicates()
 
-    def get_color_from_tier(self, tier):
+    @staticmethod
+    def get_color_from_tier(tier):
         if tier == "Premier":
             return discord.Colour.from_rgb(255, 0, 255)
         elif tier == "Master":
@@ -190,7 +190,7 @@ class Default(commands.Cog):
                 if stat != most_games:
                     self.stats.remove(stat)
 
-    @commands.command()
+    # @commands.command()
     async def format(self, ctx):
         await ctx.send(f"__Stars__\nRole (Role), Channel to Send Message (TextChannel), Week Number (Int), Star 1 (Member), Star 2 (Member), "
                  f"Star 3 (Member), Team of the Week (Role), Team of the Week Team Channel (TextChannel), "
@@ -428,15 +428,6 @@ class Default(commands.Cog):
     @commands.command()
     async def id(self, ctx, member: discord.member.Member):
         await ctx.send(f"{member.id}")
-
-    @commands.command()
-    async def shutdown(self, ctx):
-        author_id = ctx.author.id
-        if author_id == 336146049053753346:
-            await ctx.send('Shutting down the bot!')
-            await ctx.bot.logout()
-        else:
-            await ctx.send(f"You don\'t have sufficient permissions to perform this action!")
 
     @commands.command()
     async def restart(self, ctx):
