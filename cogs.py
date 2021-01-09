@@ -252,53 +252,6 @@ class Default(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
-    async def stars2(self, ctx, role: discord.role.Role, to_send: discord.channel.TextChannel, week_num: int,
-                    member1: discord.member.Member, member2: discord.member.Member, member3: discord.member.Member,
-                    team_of_week: discord.role.Role, team_channel: discord.channel.TextChannel, wait_time=0):
-        await asyncio.sleep(wait_time)
-
-        star = "⭐"
-        members_with_role = []
-        star_members = [member1, member2, member3]
-        channels_in_category = []
-
-        for member in ctx.guild.members:
-            if role in member.roles:
-                members_with_role.append(member)
-        for channel in ctx.guild.channels:
-            if channel.category_id == team_channel.category_id:
-                channels_in_category.append(channel)
-
-        for member in members_with_role:
-            if member in star_members:
-                try:
-                    if member.nick is None:
-                        nick = member.name + star
-                    else:
-                        nick = member.nick + star
-                    await member.edit(nick=nick)
-                except Exception as e:
-                    ctx.send(f"{e}")
-
-        for channel in channels_in_category:
-            if channel == team_channel:
-                await channel.edit(name=channel.name + star)
-
-        msg = await to_send.send(
-            f"Hello <@&{role.id}>, here are your 3 Stars of the Week for Week {week_num}, <@{member1.id}>,"
-            f" <@{member2.id}>, and <@{member3.id}>, and your team of the week <@&{team_of_week.id}>!",
-            file=File("./Stars of the Week.png", spoiler=False))
-
-        try:
-            await msg.add_reaction(ctx.guild.get_emoji(563508808073216021))
-        except Exception as e:
-            await ctx.send(f"{e}")
-
-        await team_channel.send(f"Congrats on team of the week <@&{team_of_week.id}>!")
-        await ctx.send(f"Stars of the week for week {week_num} was successful!")
-
-    @commands.command()
-    @commands.has_permissions(manage_guild=True)
     async def give_star(self, ctx, member: discord.member.Member):
         star = "⭐"
         if member.nick is None:
@@ -352,7 +305,6 @@ class Default(commands.Cog):
                 await post_channel.send(f"Welcome to the {str(team.name)[0:i - 1]}, <@{player.id}>!")
             except:
                 pass
-
 
     @commands.command()
     @commands.has_permissions(manage_roles=True)
@@ -435,8 +387,6 @@ class Default(commands.Cog):
         if author_id == 336146049053753346:
             await ctx.send('Restarting the bot!')
             await ctx.bot.logout()
-            await asyncio.sleep(1)
-            await ctx.bot.login(get_key("token"))
         else:
             await ctx.send(f"You don\'t have sufficient permissions to perform this action!")
 
