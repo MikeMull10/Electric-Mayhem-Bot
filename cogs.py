@@ -45,6 +45,11 @@ class Default(commands.Cog):
         # print(self.server_role, self.former_role, self.captain_role, self.coach_role)
 
     @commands.command()
+    async def set_status(self, ctx, status):
+        await self.bot.change_presence(activity=discord.Activity(name=str(status)))
+        await ctx.sent(f"Status changed to: {str(status)}")
+
+    @commands.command()
     async def send(self, ctx, member: discord.member.Member, *message):
         mes = ""
         for m in message:
