@@ -47,7 +47,7 @@ class Default(commands.Cog):
     @commands.command()
     async def set_status(self, ctx, status):
         await self.bot.change_presence(activity=discord.Activity(name=str(status)))
-        await ctx.sent(f"Status changed to: {str(status)}")
+        await ctx.send(f"Status changed to: {str(status)}")
 
     @commands.command()
     async def send(self, ctx, member: discord.member.Member, *message):
