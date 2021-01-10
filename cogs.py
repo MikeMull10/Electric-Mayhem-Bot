@@ -203,8 +203,11 @@ class Default(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def stars(self, ctx, role: discord.role.Role, to_send: discord.channel.TextChannel, week_num: int,
                    member1: discord.member.Member, member2: discord.member.Member, member3: discord.member.Member,
-                   team_of_week: discord.role.Role, team_channel: discord.channel.TextChannel, wait_time=0):
-        await asyncio.sleep(wait_time)
+                   team_of_week: discord.role.Role, team_channel: discord.channel.TextChannel):
+
+        if ctx.message.attachements is []:
+            await ctx.send(f"Please add an attachment when doing stars of the week.")
+            return
 
         star = "⭐"
         members_with_role = []
@@ -240,13 +243,10 @@ class Default(commands.Cog):
             else:
                 await self.remove_star_chat(channel)
 
-        msg = await to_send.send(f"Hello <@&{role.id}>, here are your 3 Stars of the Week for Week {week_num}, <@{member1.id}>,"
+        await to_send.send(f"Hello <@&{role.id}>, here are your 3 Stars of the Week for Week {week_num}, <@{member1.id}>,"
                        f" <@{member2.id}>, and <@{member3.id}>, and your team of the week <@&{team_of_week.id}>!",
-                       file=File("./Stars of the Week.png", spoiler=False))
-        try:
-            await msg.add_reaction(ctx.guild.get_emoji(563508808073216021))
-        except Exception as e:
-            await ctx.send(f"{e}")
+                       file=ctx.message.attachments[0])
+
         await team_channel.send(f"Congrats on team of the week <@&{team_of_week.id}>!")
         await ctx.send(f"Stars of the week for week {week_num} was successful!")
 
@@ -397,6 +397,7 @@ class Default(commands.Cog):
     @commands.command()
     async def test(self, ctx):
         await ctx.send("Test")
+        await ctx.send(type(ctx.message.attachments[0]))
         await ctx.send(file=ctx.message.attachments[0])
 
     @staticmethod
