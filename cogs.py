@@ -396,6 +396,7 @@ class Default(commands.Cog):
 
     @commands.command()
     async def test(self, ctx):
+        await ctx.send("Test")
         await ctx.send(file=ctx.message.attachments[0])
 
     @staticmethod
