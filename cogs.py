@@ -392,7 +392,7 @@ class Default(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        await ctx.send("Pong 2")
+        await ctx.send("Pong 3")
 
     @commands.command()
     async def test(self, ctx):
