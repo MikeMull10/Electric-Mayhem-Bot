@@ -398,7 +398,7 @@ class Default(commands.Cog):
     async def test(self, ctx):
         await ctx.send("Test")
         await ctx.send(type(ctx.message.attachments[0]))
-        await ctx.send(file=ctx.message.attachments[0])
+        await ctx.send(file=File(ctx.message.attachments[0]))
 
     @staticmethod
     def convert_time(string: str):
