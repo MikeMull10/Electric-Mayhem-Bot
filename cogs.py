@@ -396,9 +396,7 @@ class Default(commands.Cog):
 
     @commands.command()
     async def test(self, ctx):
-        await ctx.send("Test")
-        await ctx.send(File("https://media.discordapp.net/attachments/761954036819427328/797980899055894589/Electric_Mayhem_Logo.png?width=376&height=413"))
-        # await ctx.send(file=File(bytes(ctx.message.attachments[0])))
+        await ctx.send(ctx.message.attachments[0].url)
 
     @staticmethod
     def convert_time(string: str):
