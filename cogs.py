@@ -392,11 +392,11 @@ class Default(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        await ctx.send("Pong 3")
+        await ctx.send("Pong")
 
     @commands.command()
     async def test(self, ctx):
-        await ctx.send(ctx.message.attachments[0].url)
+        await ctx.send(f"Test\n{ctx.message.attachments[0].url}")
 
     @staticmethod
     def convert_time(string: str):
