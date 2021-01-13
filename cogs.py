@@ -400,6 +400,7 @@ class Default(commands.Cog):
                        f"3.\tWhen there, click on File > Open Bakkesmod Folder.\n\n"
                        f"4.\tIn that Folder go from data > acplugin > decal textures. Copy and paste the folder you downloaded into this folder.\n\n"
                        f"5.\tNow, open Rocket League. Navigate to the Bakkesmod plugin tab. Click on Alpha Console (Should be near the top). Navigate to the Cosmetics tab and then find the Decal Texture Mod. Now, just click on the dropdown and find the Blue and Yellow decals.\n\n"
+                       f"Tip: you can\'t have a decal on your car while using this one.\n\n"
                        f"If you have any questions, please message Dolphino.")
 
     @commands.command()
