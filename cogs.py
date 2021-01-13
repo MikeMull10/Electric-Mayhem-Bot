@@ -391,6 +391,16 @@ class Default(commands.Cog):
             await ctx.send(f"You don\'t have sufficient permissions to perform this action!")
 
     @commands.command()
+    async def decal(self, ctx):
+        await ctx.send(f"To install:\n"
+                       f"0.\tMake sure you have the Alpha Console plugin installed. Here is the link if you don\'t: https://bakkesplugins.com/plugins/view/108\n\n"
+                       f"1.\tGo to my drive https://drive.google.com/drive/u/0/folders/1cYqM9G1qH1NxdclEn-xbaqaH3LigSIlT and download both folders. Make sure to keep those files in the folders.\n\n"
+                       f"2.\tGo to the Bakkesmod injector. If you can't find it or have it hidden, you can access it by clicking the little arrow pointed up on the right side of your task bar, and then clicking the bakkesmod image.\n\n"
+                       f"3.\tWhen there, click on File > Open Bakkesmod Folder.\n\n"
+                       f"4.\tIn that Folder go from data > acplugin > decal textures. Copy and paste those folders you downloaded into this folder.\n\n"
+                       f"5.\tNow, open Rocket League. Navigate to the Bakkesmod plugin tab. Click on Alpha Console (Should be near the top). Navigate to the Cosmetics tab and then find the Decal Texture Mod. Now, just click on the dropdown and find the EM_Blue and EM_Orange decals.")
+
+    @commands.command()
     async def ping(self, ctx):
         await ctx.send("Pong")
 
