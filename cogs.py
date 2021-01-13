@@ -399,7 +399,8 @@ class Default(commands.Cog):
                        f"2.\tGo to the Bakkesmod injector. If you can't find it or have it hidden, you can access it by clicking the little arrow pointed up on the right side of your task bar, and then clicking the bakkesmod image.\n\n"
                        f"3.\tWhen there, click on File > Open Bakkesmod Folder.\n\n"
                        f"4.\tIn that Folder go from data > acplugin > decal textures. Copy and paste those folders you downloaded into this folder.\n\n"
-                       f"5.\tNow, open Rocket League. Navigate to the Bakkesmod plugin tab. Click on Alpha Console (Should be near the top). Navigate to the Cosmetics tab and then find the Decal Texture Mod. Now, just click on the dropdown and find the EM_Blue and EM_Orange decals.")
+                       f"5.\tNow, open Rocket League. Navigate to the Bakkesmod plugin tab. Click on Alpha Console (Should be near the top). Navigate to the Cosmetics tab and then find the Decal Texture Mod. Now, just click on the dropdown and find the EM_Blue and EM_Orange decals.\n\n"
+                       f"If you have any questions, please message Dolphino.")
 
     @commands.command()
     async def ping(self, ctx):
