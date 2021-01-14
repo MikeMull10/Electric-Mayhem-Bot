@@ -68,8 +68,11 @@ class Default(commands.Cog):
     async def send_saved_team_message(self, ctx, *roles: discord.role.Role):
         await ctx.send(roles)
         for player in ctx.guild.members:
+            player_roles = []
+            for r in player.roles:
+                player_roles.append(r.id)
             for role in roles:
-                if role in player.roles:
+                if role.id in player_roles:
                     await ctx.send(f"{self.saved_message}")
                     break
 
