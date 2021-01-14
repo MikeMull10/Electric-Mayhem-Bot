@@ -71,9 +71,11 @@ class Default(commands.Cog):
             player_roles = []
             for r in player.roles:
                 player_roles.append(r.id)
+            if player.name == 'Dolphino':
+                await ctx.send(player_roles)
             for role in roles:
                 if role.id in player_roles:
-                    await ctx.send(f"{self.saved_message}")
+                    await player.send(f"{self.saved_message}")
                     break
 
     @commands.command()
