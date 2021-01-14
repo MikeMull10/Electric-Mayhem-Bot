@@ -65,6 +65,14 @@ class Default(commands.Cog):
         await ctx.send(f"Messages sent to {len(members)} members.")
 
     @commands.command()
+    async def send_saved_team_message(self, ctx, *roles: discord.role.Role):
+        for player in ctx.guild.members:
+            for role in roles:
+                if role in player.roles:
+                    ctx.send(f"{self.saved_message}")
+                    break
+
+    @commands.command()
     async def save_message(self, ctx, *message):
         mes = ""
         for m in message:
@@ -201,9 +209,7 @@ class Default(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
-    async def stars(self, ctx, role: discord.role.Role, to_send: discord.channel.TextChannel, week_num: int,
-                   member1: discord.member.Member, member2: discord.member.Member, member3: discord.member.Member,
-                   team_of_week: discord.role.Role, team_channel: discord.channel.TextChannel):
+    async def stars(self, ctx, role: discord.role.Role, to_send: discord.channel.TextChannel, week_num: int, member1: discord.member.Member, member2: discord.member.Member, member3: discord.member.Member, team_of_week: discord.role.Role, team_channel: discord.channel.TextChannel):
 
         if ctx.message.attachements is []:
             await ctx.send(f"Please add an attachment when doing stars of the week.")
