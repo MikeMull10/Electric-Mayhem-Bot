@@ -69,7 +69,7 @@ class Default(commands.Cog):
         for player in ctx.guild.members:
             for role in roles:
                 if role in player.roles:
-                    ctx.send(f"{self.saved_message}")
+                    await ctx.send(f"{self.saved_message}")
                     break
 
     @commands.command()
