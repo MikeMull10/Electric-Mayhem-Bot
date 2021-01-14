@@ -66,6 +66,7 @@ class Default(commands.Cog):
 
     @commands.command()
     async def send_saved_team_message(self, ctx, *roles: discord.role.Role):
+        await ctx.send(roles)
         for player in ctx.guild.members:
             for role in roles:
                 if role in player.roles:
@@ -78,7 +79,7 @@ class Default(commands.Cog):
         for m in message:
             mes += str(m) + " "
         self.saved_message = f"{mes[:-1]}"
-        msg= await ctx.send(f"Saved Message: \"{self.saved_message}\"")
+        msg = await ctx.send(f"Saved Message: \"{self.saved_message}\"")
         await asyncio.sleep(30)
         await ctx.message.delete()
         await msg.delete()
