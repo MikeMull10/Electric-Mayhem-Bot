@@ -6,6 +6,11 @@ import asyncio
 import discord
 import bs4
 
+
+def is_me(ctx):
+    return ctx.message.author.id == 336146049053753346
+
+
 class Default(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -43,6 +48,7 @@ class Default(commands.Cog):
                             self.team_roles.append(role)
 
     @commands.command()
+    @commands.check(is_me())
     async def set_status(self, ctx, *status):
         s = ""
         for stat in status:
@@ -50,6 +56,7 @@ class Default(commands.Cog):
         await self.bot.change_presence(activity=discord.Game(name=str(s[:-1])))
         await ctx.send(f"Status changed to: {str(s)}")
 
+    @commands.has_permissions(manage_messages=True)
     @commands.command()
     async def send(self, ctx, member: discord.member.Member, *message):
         mes = ""
@@ -64,7 +71,7 @@ class Default(commands.Cog):
             await member.send(f"{self.saved_message}")
         await ctx.send(f"Messages sent to {len(members)} members.")
 
-    @commands.command()
+    # @commands.command()
     async def send_saved_team_message(self, ctx, *roles: discord.role.Role):
         await ctx.send(roles)
         for player in ctx.guild.members:
