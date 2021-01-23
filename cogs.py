@@ -423,6 +423,13 @@ class Default(commands.Cog):
                        f"If you have any questions, please message Dolphino.")
 
     @commands.command()
+    async def avatar(self, ctx, user: discord.member.Member=None):
+        if user is None:
+            await ctx.send(ctx.author.avatar)
+        else:
+            await ctx.send(user.avatar)
+
+    @commands.command()
     async def ping(self, ctx):
         await ctx.send("Pong Test")
 
