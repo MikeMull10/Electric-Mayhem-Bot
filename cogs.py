@@ -425,9 +425,9 @@ class Default(commands.Cog):
     @commands.command()
     async def avatar(self, ctx, user: discord.member.Member=None):
         if user is None:
-            await ctx.send(ctx.author.avatar)
+            await ctx.send(ctx.author.avatar.url)
         else:
-            await ctx.send(user.avatar)
+            await ctx.send(user.avatar.url)
 
     @commands.command()
     async def ping(self, ctx):
