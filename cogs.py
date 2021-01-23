@@ -212,6 +212,7 @@ class Default(commands.Cog):
                     self.stats.remove(stat)
 
     # @commands.command()
+    @staticmethod
     async def format(self, ctx):
         await ctx.send(f"__Stars__\nRole (Role), Channel to Send Message (TextChannel), Week Number (Int), Star 1 (Member), Star 2 (Member), "
                  f"Star 3 (Member), Team of the Week (Role), Team of the Week Team Channel (TextChannel), "
@@ -376,8 +377,7 @@ class Default(commands.Cog):
             print(e)
 
     @commands.command()
-    async def mvp(self, ctx, role: discord.role.Role, channel: discord.channel.TextChannel, master: discord.member.Member, elite: discord.member.Member, major: discord.member.Member,
-                  minor: discord.member.Member, challenger: discord.member.Member, prospect: discord.member.Member, contender: discord.member.Member, amateur: discord.member.Member, time_to_wait=""):
+    async def mvp(self, ctx, role: discord.role.Role, channel: discord.channel.TextChannel, master: discord.member.Member, elite: discord.member.Member, major: discord.member.Member, minor: discord.member.Member, challenger: discord.member.Member, prospect: discord.member.Member, contender: discord.member.Member, amateur: discord.member.Member, time_to_wait=""):
         await asyncio.sleep(self.convert_time(time_to_wait))
         await channel.send(f"Hello <@&{role}>. Here are the results of the MVP voting:\n\n"
                        f"<@&{self.team_roles[1].id}>: <@{master.id}>\n"
