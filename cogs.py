@@ -48,7 +48,7 @@ class Default(commands.Cog):
                             self.team_roles.append(role)
 
     @commands.command()
-    @commands.check(is_me())
+    # @commands.check(is_me())
     async def set_status(self, ctx, *status):
         s = ""
         for stat in status:
