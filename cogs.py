@@ -156,7 +156,9 @@ class Default(commands.Cog):
 
         for num in table_nums:
             for stat in stats:
-                tables.append(stat.find(id=f"tablepress-{num}"))
+                info = stat.find(id=f"tablepress-{num}")
+                if info is not None:
+                    tables.append(info)
 
         for a, table in enumerate(tables):
 
