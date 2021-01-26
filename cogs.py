@@ -118,7 +118,7 @@ class Default(commands.Cog):
             player_name += p + " "
         player_name = player_name[:-1]
 
-        if self.stats is []:
+        if self.stats == []:
             await self.update_stats_by_tier()
             # await self.update_stats()
 
