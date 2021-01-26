@@ -146,6 +146,8 @@ class Default(commands.Cog):
         for tier in self.tiers:
             stats += bs4.BeautifulSoup(requests.get(self.link + f"/sx-{tier.lower()}-4").text, "lxml")
 
+        print(stats)
+
         table_nums = [i for i in range(self.table_min, self.table_min + 9)]
         tables = []
 
