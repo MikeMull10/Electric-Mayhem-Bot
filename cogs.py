@@ -119,8 +119,8 @@ class Default(commands.Cog):
         player_name = player_name[:-1]
 
         if self.stats == []:
-            await self.update_stats_by_tier()
-            # await self.update_stats()
+            await self.update_stats_by_tier(ctx)
+            # await self.update_stats(ctx)
 
         print(self.stats)
 
@@ -142,22 +142,21 @@ class Default(commands.Cog):
         await ctx.send(f"Player \'{player_name}\' not Found")
 
     @commands.command()
-    async def update_stats_by_tier(self):
+    async def update_stats_by_tier(self, ctx):
         self.stats.clear()
         self.stats_names.clear()
 
-        stats = ""
+        stats = []
         for tier in self.tiers:
             print(self.link + f"/sx-{tier.lower()}-4")
-            stats += bs4.BeautifulSoup(requests.get(self.link + f"/sx-{tier.lower()}-4").text, "lxml")
-
-        print(stats)
+            stats.append(bs4.BeautifulSoup(requests.get(self.link + f"/sx-{tier.lower()}-4").text, "lxml"))
 
         table_nums = [i for i in range(self.table_min, self.table_min + 9)]
         tables = []
 
         for num in table_nums:
-            tables.append(stats.find(id=f"tablepress-{num}"))
+            for stat in stats:
+                tables.append(stat.find(id=f"tablepress-{num}"))
 
         for a, table in enumerate(tables):
 
@@ -176,7 +175,7 @@ class Default(commands.Cog):
         self.remove_duplicates()
 
     @commands.command()
-    async def update_stats(self):
+    async def update_stats(self, ctx):
         self.stats.clear()
         self.stats_names = []
 
