@@ -111,6 +111,8 @@ class Default(commands.Cog):
 
     @commands.command()
     async def stats(self, ctx, *player):
+        print(self.stats)
+
         player_name = ""
         for p in player:
             player_name += p + " "
