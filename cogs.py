@@ -122,6 +122,8 @@ class Default(commands.Cog):
             await self.update_stats_by_tier()
             # await self.update_stats()
 
+        print(self.stats)
+
         for stat in self.stats:
             if stat.name.lower() == player_name.lower():
                 embed = discord.Embed(
@@ -146,6 +148,7 @@ class Default(commands.Cog):
 
         stats = ""
         for tier in self.tiers:
+            print(self.link + f"/sx-{tier.lower()}-4")
             stats += bs4.BeautifulSoup(requests.get(self.link + f"/sx-{tier.lower()}-4").text, "lxml")
 
         print(stats)
