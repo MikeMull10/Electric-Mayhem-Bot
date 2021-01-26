@@ -18,12 +18,12 @@ class Default(commands.Cog):
         self.team_roles = []
         self.saved_message = ""
 
-        self.link = "https://www.rocketsoccarconfederation.com/na/s9-stats/s9-player-stats/"
+        self.link = "https://www.rocketsoccarconfederation.com/na/sx-stats/sx-player-stats/"
         self.tiers = "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(",")
 
         self.stats = []
         self.stats_names = []
-        self.table_min = 446
+        self.table_min = 512  # 446
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -117,7 +117,8 @@ class Default(commands.Cog):
         player_name = player_name[:-1]
 
         if self.stats is []:
-            await self.update_stats(ctx)
+            await self.update_stats_by_tier()
+            # await self.update_stats()
 
         for stat in self.stats:
             if stat.name.lower() == player_name.lower():
@@ -137,8 +138,39 @@ class Default(commands.Cog):
         await ctx.send(f"Player \'{player_name}\' not Found")
 
     @commands.command()
-    async def update_stats(self, ctx):
-        self.stats = []
+    async def update_stats_by_tier(self):
+        self.stats.clear()
+        self.stats_names.clear()
+
+        stats = ""
+        for tier in self.tiers:
+            stats += bs4.BeautifulSoup(requests.get(self.link + f"/sx-{tier.lower()}-4").text, "lxml")
+
+        table_nums = [i for i in range(self.table_min, self.table_min + 9)]
+        tables = []
+
+        for num in table_nums:
+            tables.append(stats.find(id=f"tablepress-{num}"))
+
+        for a, table in enumerate(tables):
+
+            table_sliced = None
+            for i, _line in enumerate(table):
+                if i == 3:
+                    table_sliced = str(_line).split("</tr>")
+
+            for stats in table_sliced:
+                name = get_stat(stats, "column-1")
+                if name is None:
+                    continue
+                self.stats.append(PlayerStats(self.tiers[a], name, get_stats(stats)))
+                self.stats_names.append(name)
+
+        self.remove_duplicates()
+
+    @commands.command()
+    async def update_stats(self):
+        self.stats.clear()
         self.stats_names = []
 
         stats = bs4.BeautifulSoup(requests.get(self.link).text, "lxml")
@@ -163,6 +195,8 @@ class Default(commands.Cog):
                 self.stats_names.append(name)
 
         self.remove_duplicates()
+
+
 
     @staticmethod
     def get_color_from_tier(tier):
