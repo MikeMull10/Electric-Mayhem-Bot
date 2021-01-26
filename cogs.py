@@ -111,8 +111,6 @@ class Default(commands.Cog):
 
     @commands.command()
     async def stats(self, ctx, *player):
-        print(self.stats)
-
         player_name = ""
         for p in player:
             player_name += p + " "
@@ -121,8 +119,6 @@ class Default(commands.Cog):
         if self.stats == []:
             await self.update_stats_by_tier(ctx)
             # await self.update_stats(ctx)
-
-        print(self.stats)
 
         for stat in self.stats:
             if stat.name.lower() == player_name.lower():
@@ -148,7 +144,6 @@ class Default(commands.Cog):
 
         stats = []
         for tier in self.tiers:
-            print(self.link + f"/sx-{tier.lower()}-4")
             stats.append(bs4.BeautifulSoup(requests.get(self.link + f"/sx-{tier.lower()}-4").text, "lxml"))
 
         table_nums = [i for i in range(self.table_min, self.table_min + 9)]
