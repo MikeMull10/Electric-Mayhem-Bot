@@ -7,7 +7,6 @@ import asyncio
 import discord
 import json
 import bs4
-import os
 
 
 def is_me(ctx):
@@ -502,8 +501,6 @@ class Default(commands.Cog):
             string = string[i + 1::]
         return total
 
-    
-
     # MORE STATS STUFF
     def create_json(self, week: int):
         try:
@@ -518,9 +515,3 @@ class Default(commands.Cog):
         for player in data:
             to_dump[f"{player.name}"] = {f"Name": f"{player.name}", f"Tier": f"{player.tier}", f"Data": f"{player.stats}"}
         json.dump(to_dump, file)
-
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def json(self, ctx, week: int):
-        self.create_json(week)
-        await ctx.send(f"Json for week {week} created.")
