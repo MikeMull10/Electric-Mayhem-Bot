@@ -1,6 +1,7 @@
+from Defs import PlayerStats, get_stats, get_stat, titles, get_key
 from discord import File as File
 from discord.ext import commands
-from Defs import PlayerStats, get_stats, get_stat, titles, get_key
+from datetime import date
 import requests
 import asyncio
 import discord
@@ -20,6 +21,7 @@ class Default(commands.Cog):
 
         self.link = "https://www.rocketsoccarconfederation.com/na/sx-stats/sx-player-stats/"
         self.tiers = "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(",")
+        self.last_time_pulled = date.today()
 
         self.stats = []
         self.stats_names = []
@@ -48,7 +50,7 @@ class Default(commands.Cog):
                             self.team_roles.append(role)
 
     @commands.command()
-    # @commands.check(is_me())
+    @commands.has_permissions(administrator=True)
     async def set_status(self, ctx, *status):
         s = ""
         for stat in status:
@@ -56,8 +58,8 @@ class Default(commands.Cog):
         await self.bot.change_presence(activity=discord.Game(name=str(s[:-1])))
         await ctx.send(f"Status changed to: {str(s)}")
 
-    @commands.has_permissions(manage_messages=True)
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def send(self, ctx, member: discord.member.Member, *message):
         mes = ""
         for m in message:
@@ -66,12 +68,14 @@ class Default(commands.Cog):
         await ctx.send(f"Message sent to <@{member.id}> member.")
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def send_saved_message(self, ctx, *members: discord.member.Member):
         for member in members:
             await member.send(f"{self.saved_message}")
         await ctx.send(f"Messages sent to {len(members)} members.")
 
     # @commands.command()
+    @commands.has_permissions(administrator=True)
     async def send_saved_team_message(self, ctx, *roles: discord.role.Role):
         await ctx.send(roles)
         for player in ctx.guild.members:
@@ -86,6 +90,7 @@ class Default(commands.Cog):
                     break
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def save_message(self, ctx, *message):
         mes = ""
         for m in message:
@@ -116,9 +121,10 @@ class Default(commands.Cog):
             player_name += p + " "
         player_name = player_name[:-1]
 
-        if self.stats == []:
+        if self.stats == [] or self.last_time_pulled != date.today():
             await self.update_stats_by_tier(ctx)
             # await self.update_stats(ctx)
+            self.last_time_pulled = date.today()
 
         for stat in self.stats:
             if stat.name.lower() == player_name.lower():
@@ -138,6 +144,7 @@ class Default(commands.Cog):
         await ctx.send(f"Player \'{player_name}\' not Found")
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def update_stats_by_tier(self, ctx):
         self.stats.clear()
         self.stats_names.clear()
@@ -172,6 +179,7 @@ class Default(commands.Cog):
         self.remove_duplicates()
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def update_stats(self, ctx):
         self.stats.clear()
         self.stats_names = []
@@ -198,8 +206,6 @@ class Default(commands.Cog):
                 self.stats_names.append(name)
 
         self.remove_duplicates()
-
-
 
     @staticmethod
     def get_color_from_tier(tier):
