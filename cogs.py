@@ -5,6 +5,7 @@ from datetime import date
 import requests
 import asyncio
 import discord
+import json
 import bs4
 
 
@@ -499,3 +500,18 @@ class Default(commands.Cog):
             total += time
             string = string[i + 1::]
         return total
+
+    # MORE STATS STUFF
+    def create_json(self, week: int):
+        try:
+            file = open(f"Week-{week}.txt", "x")
+        except:
+            file = open(f"Week-{week}.txt", "w")
+
+        self.update_stats_by_tier(None)
+
+        data = self.stats
+        to_dump = {}
+        for player in data:
+            to_dump[f"{player.name}"] = {f"Name": f"{player.name}", f"Tier": f"{player.tier}", f"Data": f"{player.stats}"}
+        json.dump(to_dump, file)
