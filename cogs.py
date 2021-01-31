@@ -269,9 +269,9 @@ class Default(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def stars(self, ctx, role: discord.role.Role, to_send: discord.channel.TextChannel, week_num: int, member1: discord.member.Member, member2: discord.member.Member, member3: discord.member.Member, team_of_week: discord.role.Role, team_channel: discord.channel.TextChannel):
 
-        if ctx.message.attachements is []:
-            await ctx.send(f"Please add an attachment when doing stars of the week.")
-            return
+        # if ctx.message.attachements is []:
+        #     await ctx.send(f"Please add an attachment when doing stars of the week.")
+        #     return
 
         star = "⭐"
         members_with_role = []
