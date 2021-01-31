@@ -290,7 +290,7 @@ class Default(commands.Cog):
                 try:
                     await self.remove_star(member)
                 except Exception as e:
-                    ctx.send(f"{e}")
+                    ctx.send(f"Name error: {e}")
             elif member in star_members:
                 try:
                     if member.nick is None:
@@ -299,7 +299,7 @@ class Default(commands.Cog):
                         nick = member.nick + star
                     await member.edit(nick=nick)
                 except Exception as e:
-                    ctx.send(f"{e}")
+                    ctx.send(f"Name error 2: {e}")
 
         for channel in channels_in_category:
             if channel == team_channel:
@@ -309,7 +309,7 @@ class Default(commands.Cog):
 
         await to_send.send(f"Hello <@&{role.id}>, here are your 3 Stars of the Week for Week {week_num}, <@{member1.id}>,"
                        f" <@{member2.id}>, and <@{member3.id}>, and your team of the week <@&{team_of_week.id}>!",
-                       file=ctx.message.attachments[0])
+                       file=File("./Stars of the Week.png"))
 
         await team_channel.send(f"Congrats on team of the week <@&{team_of_week.id}>!")
         await ctx.send(f"Stars of the week for week {week_num} was successful!")
