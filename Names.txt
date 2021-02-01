@@ -13,7 +13,7 @@ Major:Wheats541
 Minor:Animosity
 Minor:Heiz.
 Minor:Koach
-Minor:Toxic_luigi_MF
+Minor:Toxic_Luigi_MF
 Challenger:BreadMG
 Challenger:Gmoney
 Challenger:hayhay217

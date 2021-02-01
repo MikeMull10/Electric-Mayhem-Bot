@@ -12,9 +12,9 @@ for name in names:
 
 def create_json(week: int):
     try:
-        file = open(f"Week-{week}.txt", "x")
+        file = open(f"Week-{week}.json", "x")
     except:
-        file = open(f"Week-{week}.txt", "w")
+        file = open(f"Week-{week}.json", "w")
 
     data = stats()
     to_dump = {}
@@ -24,9 +24,9 @@ def create_json(week: int):
 
 def create_json_em(week: int):
     try:
-        file = open(f"EM-Week-{week}.txt", "x")
+        file = open(f"EM-Week-{week}.json", "x")
     except:
-        file = open(f"EM-Week-{week}.txt", "w")
+        file = open(f"EM-Week-{week}.json", "w")
 
     data = stats()
     to_dump = {}
@@ -140,4 +140,11 @@ def sort_rating():
         sorted_scores.append(highest)
     return sorted_scores
 
-print(sort_rating())
+
+create_json_em(1)
+file = json.load(open("EM-Week-1.json", "r"))
+for name in _names:
+    try:
+        print(file[name])
+    except:
+        pass
