@@ -2,12 +2,13 @@ alphabet = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
 titles = "Name, Tier, Games Played, Games Won, Games Lost, Win Percentage, MVPs, Points, Goals, Assists, Saves, Shots, " \
          "Shot Percentage, Points per Game, Goals per Game, Assists per Game, Saves per Game, Shots per Game, Cycles, Hat Tricks, " \
          "Playmakers, Saviors".split(", ")
+team_titles = "GM, Conference, Team, Games Played, Games Won, Games Lost, Win Percentage, Shot Percentage, Points, Goals, " \
+              "Assists, Saves, Shots, Goal Difference, Opp. Shot Percentage, Opp. Goals, Opp. Points, Opp. Assists, Opp. Saves, Opp. Shots".split(", ")
 def get_key(key):
     lines = open("text_config.txt", "r").readlines()
     for line in lines:
         if line.startswith(key):
             return line[line.find(":") + 1:].replace("\n", "")
-
 
 class PlayerStats:
     def __init__(self, tier, name, stats):
@@ -28,6 +29,21 @@ class PlayerStats:
             ret.append(stat)
         return ret
 
+class TeamStats:
+    def __init__(self, tier, stats):
+        self.tier = tier
+        self.gm, self.conference, self.team, self.games_played, self.games_won, self.games_lost, self.win_percentange, self.shot_percentage, self.points, self.goals, \
+            self.assists, self.saves, self.shots, self.goal_difference, self.opp_shot_percentage, self.opp_points, self.opp_goals, self.opp_assists, self.opp_saves, self.opp_shots = stats
+        self.stats = stats
+
+    def __str__(self):
+        return f"Tier: {self.tier}, Name: {self.team}, Stats: {self.stats}"
+
+    def get_info(self):
+        ret = [self.team, self.tier]
+        for stat in self.stats:
+            ret.append(stat)
+        return ret
 
 def get_stat(info, column):
     try:
@@ -42,7 +58,6 @@ def get_stat(info, column):
         num += 1
     return ret
 
-
 def get_stats(info):
     _stats = []
     for i in range(3, 23):
@@ -54,7 +69,6 @@ def get_stats(info):
         except:
             _stats.append(0)
     return _stats
-
 
 def differences(stat1, stat2):
     name = stat2[0]

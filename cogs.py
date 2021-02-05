@@ -1,4 +1,4 @@
-from Defs import PlayerStats, get_stats, get_stat, titles, get_key
+from Defs import PlayerStats, get_stats, get_stat, titles, team_titles, get_key
 from discord import File as File
 from discord.ext import commands
 from datetime import date
@@ -23,10 +23,13 @@ class Default(commands.Cog):
         self.link = "https://www.rocketsoccarconfederation.com/na/sx-stats/sx-player-stats/"
         self.tiers = "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(",")
         self.last_time_pulled = date.today()
+        self.team_last_time_pulled = date.today()
 
         self.stats = []
+        self.team_stats = []
         self.stats_names = []
         self.table_min = 512  # 446
+        self.table_min_team = 503
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -127,7 +130,7 @@ class Default(commands.Cog):
             # await self.update_stats(ctx)
             self.last_time_pulled = date.today()
 
-        for stat in self.stats:
+        for stat in self.team_stats:
             if stat.name.lower() == player_name.lower():
                 embed = discord.Embed(
                     title=f"{player_name}\'s Stats",
@@ -143,6 +146,33 @@ class Default(commands.Cog):
                 await ctx.send(embed=embed)
                 return
         await ctx.send(f"Player \'{player_name}\' not Found")
+
+    @commands.command()
+    async def team_stats(self, ctx, *team):
+        team_name = ""
+        for p in team:
+            team_name += p + " "
+        team_name = team_name[:-1]
+
+        if self.team_stats == [] or self.last_time_pulled != date.today():
+            await self.update_stats_by_tier(ctx)
+            self.team_last_time_pulled = date.today()
+
+        for stat in self.stats:
+            if stat.name.lower() == team_name.lower():
+                embed = discord.Embed(
+                    title=f"{team_name}\'s Stats",
+                    colour=self.get_color_from_tier(stat.tier)
+                )
+                embed.set_thumbnail(
+                    url="https://www.rocketsoccarconfederation.com/wp-content/uploads/2018/01/cropped-rsc-logo-500-1.png")
+
+                for i, title in enumerate(team_titles):
+                    embed.add_field(name=title, value=stat.stats[i], inline=True)
+
+                await ctx.send(embed=embed)
+                return
+        await ctx.send(f"Player \'{team_name}\' not Found")
 
     @commands.command()
     @commands.has_permissions(administrator=True)
