@@ -140,11 +140,77 @@ def sort_rating():
         sorted_scores.append(highest)
     return sorted_scores
 
-
-create_json_em(1)
-file = json.load(open("EM-Week-1.json", "r"))
-for name in _names:
+def create_em_blank_slate(title):
     try:
-        print(file[name])
+        file = open(f"{title}.json", "x")
     except:
-        pass
+        file = open(f"{title}.json", "w")
+
+    data = []
+    to_dump = {}
+
+    n = []
+    for line in open("Names.txt", "r"):
+        n.append(line.split(":"))
+
+    for name in n:
+        data.append(PlayerStats(f"{name[0]}", f"{name[1][:-1]}", [0 for i in range(20)]))
+
+    for player in data:
+        to_dump[f"{player.name}"] = {f"Name": f"{player.name}", f"Tier": f"{player.tier}", f"Data": f"{player.stats}"}
+    json.dump(to_dump, file)
+
+def load_data(filename):
+    file = json.load(open(f"{filename}.json", "r"))
+
+    data = []
+    for n in _names:
+        try:
+            player = file[n]
+            tier = player['Tier']
+            name = player['Name']
+            _data = player['Data'][1:-1].split(", ")
+
+            for i, item in enumerate(_data):
+                try:
+                    if int(item) == float(item):
+                        _data[i] = int(item)
+                    else:
+                        _data[i] = float(item)
+                    continue
+                except:
+                    _data[i] = float(item)
+
+            data.append(PlayerStats(tier, name, _data))
+        except:
+            print(n, "failed.")
+            continue
+    return data
+
+def make_comparison(week1: int, week2: int):
+    w1, w2 = load_data(f"EM-Week-{week1}"), load_data(f"EM-Week-{week2}")
+    comps = []
+    for player in w2:
+        for play in w1:
+            if player.name == play.name:
+                stats = []
+                for i in range(len(player.stats)):
+                    stats.append(player.stats[i] - play.stats[i])
+                if stats[0] == 0:
+                    comps.append(PlayerStats(player.tier, player.name, [0 for i in range(20)]))
+                    continue
+                stats[3] = round(float(stats[1]) / float(stats[0]) * 100, 2)
+                stats[10] = round(float(stats[6]) / float(stats[9]), 2)
+                for i in range(5):
+                    stats[10 + i] = round(float(stats[5 + i]) / float(stats[0]), 2)
+                comps.append(PlayerStats(player.tier, player.name, stats))
+    return comps
+
+
+data = load_data("EM-Week-1")
+for d in data:
+    print(d)
+data = make_comparison(0, 1)
+for d in data:
+    print(d)
+
