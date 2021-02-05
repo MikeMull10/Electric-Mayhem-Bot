@@ -35,6 +35,17 @@ def create_json_em(week: int):
             to_dump[f"{player.name}"] = {f"Name": f"{player.name}", f"Tier": f"{player.tier}", f"Data": f"{player.stats}"}
     json.dump(to_dump, file)
 
+def create_json_free(title, data):
+    try:
+        file = open(f"{title}.json", "x")
+    except:
+        file = open(f"{title}.json", "w")
+
+    to_dump = {}
+    for player in data:
+        to_dump[f"{player.name}"] = {f"Name": f"{player.name}", f"Tier": f"{player.tier}", f"Data": f"{player.stats}"}
+    json.dump(to_dump, file)
+
 def stats():
     link = "https://www.rocketsoccarconfederation.com/na/sx-stats/sx-player-stats/"
     tiers = "Premier,Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(",")
@@ -110,7 +121,30 @@ def create_sheet(title, week):
 
     for row, player in enumerate(em_data):
         for i, cell in enumerate(player):
-            print(i, row)
+            sheet.write(f"{alphabet[i + 1]}{row + 3}", cell)
+
+    workbook.close()
+
+def create_comparison_sheet(_data, title, week):
+    workbook = xlsxwriter.Workbook(f"{title}.xlsx")
+    workbook.set_tab_ratio(50)
+    sheet = workbook.add_worksheet(f"Week {week}")
+    data = [i.get_info() for i in _data]
+
+    for i, t in enumerate(titles):
+        sheet.write(f"{alphabet[i+1]}2", t)
+        if i > 1:
+            sheet.set_column(f"{alphabet[i + 1]}:{alphabet[i + 1]}", int(len(t) * 1.25))
+        else:
+            sheet.set_column(f"{alphabet[i + 1]}:{alphabet[i + 1]}", int(len(t) * 2.5))
+
+    em_data = []
+    for player in data:
+        if player[0] in _names:
+            em_data.append(player)
+
+    for row, player in enumerate(em_data):
+        for i, cell in enumerate(player):
             sheet.write(f"{alphabet[i + 1]}{row + 3}", cell)
 
     workbook.close()
@@ -201,16 +235,7 @@ def make_comparison(week1: int, week2: int):
                     continue
                 stats[3] = round(float(stats[1]) / float(stats[0]) * 100, 2)
                 stats[10] = round(float(stats[6]) / float(stats[9]), 2)
-                for i in range(5):
+                for i in range(6):
                     stats[10 + i] = round(float(stats[5 + i]) / float(stats[0]), 2)
                 comps.append(PlayerStats(player.tier, player.name, stats))
     return comps
-
-
-data = load_data("EM-Week-1")
-for d in data:
-    print(d)
-data = make_comparison(0, 1)
-for d in data:
-    print(d)
-
