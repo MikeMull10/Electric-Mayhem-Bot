@@ -1,4 +1,5 @@
-from Defs import PlayerStats, get_stats, get_stat, titles, get_key, alphabet
+from Defs import PlayerStats, get_stats, get_stat, titles, get_key, alphabet, tiers
+from math import ceil
 import xlsxwriter
 import requests
 import json
@@ -6,9 +7,11 @@ import bs4
 
 names = open("Names.txt", "r")
 
+names_with_tiers = []
 _names = []
 for name in names:
     _names.append(name.split(":")[1][:-1])
+    names_with_tiers.append(name.split(":")[::-1])
 
 def create_json(week: int):
     try:
@@ -107,8 +110,9 @@ def create_sheet(title, week):
     sheet = workbook.add_worksheet(f"Week {week}")
     data = [i.get_info() for i in stats()]
 
+    ### Player Statistics Table ###
+
     for i, t in enumerate(titles):
-        sheet.write(f"{alphabet[i+1]}2", t)
         if i > 1:
             sheet.set_column(f"{alphabet[i + 1]}:{alphabet[i + 1]}", int(len(t) * 1.25))
         else:
@@ -119,9 +123,38 @@ def create_sheet(title, week):
         if player[0] in _names:
             em_data.append(player)
 
-    for row, player in enumerate(em_data):
-        for i, cell in enumerate(player):
-            sheet.write(f"{alphabet[i + 1]}{row + 3}", cell)
+    print(em_data)
+
+    options = {
+        'data': em_data,
+        'style': 'Table Style Medium 7',
+        'columns': [
+            {'header': 'Name'},
+            {'header': 'Tier'},
+            {'header': 'Games Played'},
+            {'header': 'Games Won'},
+            {'header': 'Games Lost'},
+            {'header': 'Win Percentage'},
+            {'header': 'MVPs'},
+            {'header': 'Points'},
+            {'header': 'Goals'},
+            {'header': 'Assists'},
+            {'header': 'Saves'},
+            {'header': 'Shots'},
+            {'header': 'Shot Percentage'},
+            {'header': 'Points per Game'},
+            {'header': 'Goals per Game'},
+            {'header': 'Assists per Game'},
+            {'header': 'Saves per Game'},
+            {'header': 'Shots per Game'},
+            {'header': 'Cycles'},
+            {'header': 'Hat tricks'},
+            {'header': 'Playmakers'},
+            {'header': 'Saviors'},
+        ]
+    }
+
+    sheet.add_table(f'B2:W{len(em_data) + 2}', options=options)
 
     workbook.close()
 
@@ -131,8 +164,9 @@ def create_comparison_sheet(_data, title, week):
     sheet = workbook.add_worksheet(f"Week {week}")
     data = [i.get_info() for i in _data]
 
+    ### Player Statistics Table ###
+
     for i, t in enumerate(titles):
-        sheet.write(f"{alphabet[i+1]}2", t)
         if i > 1:
             sheet.set_column(f"{alphabet[i + 1]}:{alphabet[i + 1]}", int(len(t) * 1.25))
         else:
@@ -143,14 +177,74 @@ def create_comparison_sheet(_data, title, week):
         if player[0] in _names:
             em_data.append(player)
 
-    for row, player in enumerate(em_data):
-        for i, cell in enumerate(player):
-            sheet.write(f"{alphabet[i + 1]}{row + 3}", cell)
+    options = {
+        'data': em_data,
+        'style': 'Table Style Medium 7',
+        'columns': [
+            {'header': 'Name'},
+            {'header': 'Tier'},
+            {'header': 'Games Played'},
+            {'header': 'Games Won'},
+            {'header': 'Games Lost'},
+            {'header': 'Win Percentage'},
+            {'header': 'MVPs'},
+            {'header': 'Points'},
+            {'header': 'Goals'},
+            {'header': 'Assists'},
+            {'header': 'Saves'},
+            {'header': 'Shots'},
+            {'header': 'Shot Percentage'},
+            {'header': 'Points per Game'},
+            {'header': 'Goals per Game'},
+            {'header': 'Assists per Game'},
+            {'header': 'Saves per Game'},
+            {'header': 'Shots per Game'},
+            {'header': 'Cycles'},
+            {'header': 'Hat tricks'},
+            {'header': 'Playmakers'},
+            {'header': 'Saviors'},
+        ]
+    }
+
+    sheet.add_table(f'B2:W{len(em_data) + 2}', options=options)
+
+
+    ### Team Statistics Table ###
+
+    teams = []
+    for t in tiers:
+        teams.append([t, 0, 0, 0, 0, 0])  # Tier, Wins, Goals, Assists
+
+    for player in em_data:
+        i = tiers.index(player[1])
+        teams[i][1] += player[3]
+        teams[i][2] += player[4]
+        teams[i][3] += player[8]
+        teams[i][4] += player[9]
+        teams[i][5] = teams[i][3] + teams[i][4]
+
+    for team in teams:
+        team[1] = f"{int(ceil(team[1] / 3))}-{int(ceil(team[2] / 3))}"
+        team.pop(2)
+
+    options2 = {
+        'data': teams,
+        'style': 'Table Style Medium 7',
+        'columns': [
+            {'header': 'Tier'},
+            {'header': 'Record'},
+            {'header': 'Goals'},
+            {'header': 'Assists'},
+            {'header': 'Goals + Assists'},
+        ]
+    }
+
+    sheet.add_table(f'B{len(em_data) + 4}:F{len(em_data) + len(teams) + 4}', options=options2)
 
     workbook.close()
 
-def sort_rating():
-    data = [i.get_info() for i in stats()]
+def sort_rating(_data):
+    data = [i.get_info() for i in _data]
     em_data = []
     for player in data:
         if player[0] in _names:
@@ -170,7 +264,10 @@ def sort_rating():
             if next[1] > highest_score:
                 highest = next
                 highest_score = next[1]
-        scores.remove(highest)
+        try:
+            scores.remove(highest)
+        except:
+            pass
         sorted_scores.append(highest)
     return sorted_scores
 
@@ -217,12 +314,12 @@ def load_data(filename):
 
             data.append(PlayerStats(tier, name, _data))
         except:
-            print(n, "failed.")
+            data.append(PlayerStats(names_with_tiers[_names.index(n)][1], n, [0 for i in range(20)]))
             continue
     return data
 
 def make_comparison(week1: int, week2: int):
-    w1, w2 = load_data(f"EM-Week-{week1}"), load_data(f"EM-Week-{week2}")
+    w1, w2 = load_data(f"Week-{week1}"), load_data(f"EM-Week-{week2}")
     comps = []
     for player in w2:
         for play in w1:
@@ -239,3 +336,6 @@ def make_comparison(week1: int, week2: int):
                     stats[10 + i] = round(float(stats[5 + i]) / float(stats[0]), 2)
                 comps.append(PlayerStats(player.tier, player.name, stats))
     return comps
+
+create_comparison_sheet(make_comparison(1, 2), "Week 1-2", "1-2")
+sort_rating(make_comparison(1, 2))

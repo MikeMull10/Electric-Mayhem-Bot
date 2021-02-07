@@ -4,6 +4,7 @@ titles = "Name, Tier, Games Played, Games Won, Games Lost, Win Percentage, MVPs,
          "Playmakers, Saviors".split(", ")
 team_titles = "GM, Conference, Team, Games Played, Games Won, Games Lost, Win Percentage, Shot Percentage, Points, Goals, " \
               "Assists, Saves, Shots, Goal Difference, Opp. Shot Percentage, Opp. Goals, Opp. Points, Opp. Assists, Opp. Saves, Opp. Shots".split(", ")
+tiers = "Master,Elite,Major,Minor,Challenger,Prospect,Contender,Amateur".split(",")
 def get_key(key):
     lines = open("text_config.txt", "r").readlines()
     for line in lines:
