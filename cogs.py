@@ -218,7 +218,7 @@ class Default(commands.Cog):
 
         stats = []
         for tier in self.tiers:
-            stats.append(bs4.BeautifulSoup(requests.get(self.team_link + f"sx-{tier}-3")))
+            stats.append(bs4.BeautifulSoup(requests.get(self.team_link + f"sx-{tier}-3").text, "lxml"))
 
         table_nums = [i for i in range(self.table_min_team, self.table_min_team + 9)]
         tables = []
