@@ -157,7 +157,7 @@ class Default(commands.Cog):
         team_name = team_name[:-1]
 
         if self.team_stats == [] or self.last_time_pulled != date.today():
-            await self.update_stats_by_tier(ctx)
+            await self.update_team_stats_by_tier(ctx)
             self.team_last_time_pulled = date.today()
 
         for stat in self.team_stats:
