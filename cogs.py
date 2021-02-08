@@ -545,3 +545,6 @@ class Default(commands.Cog):
         for player in data:
             to_dump[f"{player.name}"] = {f"Name": f"{player.name}", f"Tier": f"{player.tier}", f"Data": f"{player.stats}"}
         json.dump(to_dump, file)
+
+    def stats_test(self, ctx):
+        await ctx.send(f"{len(self.stats)}")
