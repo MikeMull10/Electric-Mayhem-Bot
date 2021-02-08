@@ -130,7 +130,7 @@ class Default(commands.Cog):
             # await self.update_stats(ctx)
             self.last_time_pulled = date.today()
 
-        for stat in self.team_stats:
+        for stat in self.stats:
             if stat.name.lower() == player_name.lower():
                 embed = discord.Embed(
                     title=f"{player_name}\'s Stats",
@@ -158,7 +158,7 @@ class Default(commands.Cog):
             await self.update_stats_by_tier(ctx)
             self.team_last_time_pulled = date.today()
 
-        for stat in self.stats:
+        for stat in self.team_stats:
             if stat.name.lower() == team_name.lower():
                 embed = discord.Embed(
                     title=f"{team_name}\'s Stats",
