@@ -242,6 +242,8 @@ class Default(commands.Cog):
                     continue
                 self.team_stats.append(TeamStats(self.tiers[a], get_stats(stats)))
 
+        print(self.team_stats)
+
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def update_stats(self, ctx):
