@@ -287,8 +287,9 @@ class Default(commands.Cog):
 
     @commands.command()
     async def stats_test(self, ctx):
-        print(self.stats)
-        await ctx.send(f"{len(self.stats)}\n{self.stats}")
+        for stat in self.stats:
+            print(stat)
+        await ctx.send(f"{len(self.stats)}")
 
     # @commands.command()
     @staticmethod
