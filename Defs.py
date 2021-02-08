@@ -73,7 +73,7 @@ def get_stats(info):
 
 def get_team_stats(info):
     _stats = []
-    for i in range(1, 20):
+    for i in range(0, 20):
         stat = get_stat(info, f"column-{i}")
         if "%" in stat:
             stat = stat[:-1]
