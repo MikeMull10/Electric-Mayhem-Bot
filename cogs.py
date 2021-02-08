@@ -206,7 +206,8 @@ class Default(commands.Cog):
                 name = get_stat(stats, "column-1")
                 if name is None:
                     continue
-                self.team_stats.append(TeamStats(self.tiers[a], get_team_stats(stats)))
+                self.stats.append(PlayerStats(self.tiers[a], name, get_stats(stats)))
+                self.stats_names.append(name)
 
         self.remove_duplicates()
 
@@ -239,8 +240,7 @@ class Default(commands.Cog):
                 name = get_stat(stats, "column-1")
                 if name is None:
                     continue
-                self.stats.append(PlayerStats(self.tiers[a], name, get_stats(stats)))
-                self.stats_names.append(name)
+                self.team_stats.append(TeamStats(self.tiers[a], get_stats(stats)))
 
     @commands.command()
     @commands.has_permissions(administrator=True)
