@@ -71,6 +71,18 @@ def get_stats(info):
             _stats.append(0)
     return _stats
 
+def get_team_stats(info):
+    _stats = []
+    for i in range(1, 20):
+        stat = get_stat(info, f"column-{i}")
+        if "%" in stat:
+            stat = stat[:-1]
+        try:
+            _stats.append(eval(stat))
+        except:
+            _stats.append(0)
+    return _stats
+
 def differences(stat1, stat2):
     name = stat2[0]
     tier = stat2[1]

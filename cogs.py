@@ -1,4 +1,4 @@
-from Defs import PlayerStats, get_stats, get_stat, titles, team_titles, get_key
+from Defs import PlayerStats, TeamStats, get_stats, get_stat, titles, team_titles, get_team_stats
 from discord import File as File
 from discord.ext import commands
 from datetime import date
@@ -25,9 +25,11 @@ class Default(commands.Cog):
         self.last_time_pulled = date.today()
         self.team_last_time_pulled = date.today()
 
+        self.team_link = "https://www.rocketsoccarconfederation.com/na/sx-stats/sx-team-stats/"
         self.stats = []
         self.team_stats = []
         self.stats_names = []
+
         self.table_min = 512  # 446
         self.table_min_team = 503
 
@@ -204,10 +206,41 @@ class Default(commands.Cog):
                 name = get_stat(stats, "column-1")
                 if name is None:
                     continue
-                self.stats.append(PlayerStats(self.tiers[a], name, get_stats(stats)))
-                self.stats_names.append(name)
+                self.team_stats.append(TeamStats(self.tiers[a], get_team_stats(stats)))
 
         self.remove_duplicates()
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def update_team_stats_by_tier(self, ctx):
+        self.team_stats.clear()
+
+        stats = []
+        for tier in self.tiers:
+            stats.append(bs4.BeautifulSoup(requests.get(self.team_link + f"sx-{tier}-3")))
+
+        table_nums = [i for i in range(self.table_min_team, self.table_min_team + 9)]
+        tables = []
+
+        for num in table_nums:
+            for stat in stats:
+                info = stat.find(id=f"tablepress-{num}")
+                if info is not None:
+                    tables.append(info)
+
+        for a, table in enumerate(tables):
+
+            table_sliced = None
+            for i, _line in enumerate(table):
+                if i == 3:
+                    table_sliced = str(_line).split("</tr>")
+
+            for stats in table_sliced:
+                name = get_stat(stats, "column-1")
+                if name is None:
+                    continue
+                self.stats.append(PlayerStats(self.tiers[a], name, get_stats(stats)))
+                self.stats_names.append(name)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
