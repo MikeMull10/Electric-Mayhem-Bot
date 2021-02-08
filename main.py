@@ -1,4 +1,5 @@
 from discord.ext import commands
+from Defs import get_key
 from cogs import *
 
 bot = commands.Bot(command_prefix=get_key("prefix"))

@@ -174,7 +174,7 @@ class Default(commands.Cog):
 
                 await ctx.send(embed=embed)
                 return
-        await ctx.send(f"Player \'{team_name}\' not Found")
+        await ctx.send(f"Team \'{team_name}\' not Found")
 
     @commands.command()
     @commands.has_permissions(administrator=True)
