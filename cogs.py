@@ -285,6 +285,10 @@ class Default(commands.Cog):
                 if stat != most_games:
                     self.stats.remove(stat)
 
+    @commands.command()
+    async def stats_test(self, ctx):
+        await ctx.send(f"{len(self.stats)}")
+
     # @commands.command()
     @staticmethod
     async def format(self, ctx):
@@ -544,6 +548,3 @@ class Default(commands.Cog):
         for player in data:
             to_dump[f"{player.name}"] = {f"Name": f"{player.name}", f"Tier": f"{player.tier}", f"Data": f"{player.stats}"}
         json.dump(to_dump, file)
-
-    async def stats_test(self, ctx):
-        await ctx.send(f"{len(self.stats)}")
