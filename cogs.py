@@ -528,7 +528,6 @@ class Default(commands.Cog):
             i = string.index("s")
             time = int(string[0:i])
             total += time
-            string = string[i + 1::]
         return total
 
     # MORE STATS STUFF
@@ -546,5 +545,5 @@ class Default(commands.Cog):
             to_dump[f"{player.name}"] = {f"Name": f"{player.name}", f"Tier": f"{player.tier}", f"Data": f"{player.stats}"}
         json.dump(to_dump, file)
 
-    def stats_test(self, ctx):
+    async def stats_test(self, ctx):
         await ctx.send(f"{len(self.stats)}")
