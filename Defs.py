@@ -35,6 +35,7 @@ class TeamStats:
         self.tier = tier
         self.gm, self.conference, self.team, self.games_played, self.games_won, self.games_lost, self.win_percentange, self.shot_percentage, self.points, self.goals, \
             self.assists, self.saves, self.shots, self.goal_difference, self.opp_shot_percentage, self.opp_points, self.opp_goals, self.opp_assists, self.opp_saves, self.opp_shots = stats
+        self.name = self.team
         self.stats = stats
 
     def __str__(self):
@@ -73,8 +74,11 @@ def get_stats(info):
 
 def get_team_stats(info):
     _stats = []
-    for i in range(0, 20):
+    for i in range(1, 21):
         stat = get_stat(info, f"column-{i}")
+        if i <= 3:
+            _stats.append(stat)
+            continue
         if "%" in stat:
             stat = stat[:-1]
         try:

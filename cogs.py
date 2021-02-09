@@ -161,7 +161,8 @@ class Default(commands.Cog):
             self.team_last_time_pulled = date.today()
 
         for stat in self.team_stats:
-            if stat.name.lower() == team_name.lower():
+            print(stat.team, team_name)
+            if stat.team.lower() == team_name.lower():
                 embed = discord.Embed(
                     title=f"{team_name}\'s Stats",
                     colour=self.get_color_from_tier(stat.tier)
@@ -170,6 +171,8 @@ class Default(commands.Cog):
                     url="https://www.rocketsoccarconfederation.com/wp-content/uploads/2018/01/cropped-rsc-logo-500-1.png")
 
                 for i, title in enumerate(team_titles):
+                    if i == 2:
+                        continue
                     embed.add_field(name=title, value=stat.stats[i], inline=True)
 
                 await ctx.send(embed=embed)
@@ -228,6 +231,8 @@ class Default(commands.Cog):
                 info = stat.find(id=f"tablepress-{num}")
                 if info is not None:
                     tables.append(info)
+                else:
+                    print(stat)
 
         for a, table in enumerate(tables):
 
@@ -240,9 +245,10 @@ class Default(commands.Cog):
                 name = get_stat(stats, "column-1")
                 if name is None:
                     continue
-                self.team_stats.append(TeamStats(self.tiers[a], get_stats(stats)))
+                self.team_stats.append(TeamStats(self.tiers[a], get_team_stats(stats)))
 
-        print(self.team_stats)
+        for stat in self.team_stats:
+            print(stat)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
