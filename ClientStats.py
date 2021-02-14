@@ -337,5 +337,5 @@ def make_comparison(week1: int, week2: int):
                 comps.append(PlayerStats(player.tier, player.name, stats))
     return comps
 
-create_comparison_sheet(make_comparison(1, 2), "Week 1-2", "1-2")
-sort_rating(make_comparison(1, 2))
+create_sheet("EM-Week-3", 3)
+# create_comparison_sheet(make_comparison(2, 3), "Week 2-3", "2-3")
