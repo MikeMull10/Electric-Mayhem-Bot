@@ -337,5 +337,7 @@ def make_comparison(week1: int, week2: int):
                 comps.append(PlayerStats(player.tier, player.name, stats))
     return comps
 
-create_sheet("EM-Week-3", 3)
-# create_comparison_sheet(make_comparison(2, 3), "Week 2-3", "2-3")
+create_json(4)
+create_json_em(4)
+create_sheet("EM-Week-3", 4)
+create_comparison_sheet(make_comparison(3, 4), "Week 3-4", "3-4")
