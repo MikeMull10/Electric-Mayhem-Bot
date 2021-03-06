@@ -161,7 +161,6 @@ class Default(commands.Cog):
             self.team_last_time_pulled = date.today()
 
         for stat in self.team_stats:
-            print(stat.team, team_name)
             if stat.team.lower() == team_name.lower():
                 embed = discord.Embed(
                     title=f"{team_name}\'s Stats",
